@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api"
+	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/extinstance"
 	"github.com/stretchr/testify/assert"
@@ -27,22 +28,13 @@ func TestQueryMetrics(t *testing.T) {
 	instance := extinstance.Instance{Name: "test-prom", BaseUrl: container.baseUrl}
 	extinstance.Instances = []extinstance.Instance{instance}
 
-	time.Sleep(time.Second * 10)
-
-	timestamp := time.Now()
-	json, err := json.Marshal(action_kit_api.QueryMetricsRequestBody{
-		Target: extutil.Ptr(action_kit_api.Target{
-			Name: instance.Name,
-		}),
-		Timestamp: timestamp,
-		Config: map[string]interface{}{
-			"query": "up",
-		},
-	})
-	require.Nil(t, err)
+	require.Eventually(t, func() bool {
+		result, err := getTestMetric(instance)
+		return err == nil && len(*result.Metrics) > 0
+	}, time.Minute, time.Millisecond*200)
 
 	// When
-	result, exterr := Query(json)
+	result, exterr := getTestMetric(instance)
 	require.Nil(t, exterr)
 
 	assert.Len(t, *result.Metrics, 1)
@@ -54,6 +46,22 @@ func TestQueryMetrics(t *testing.T) {
 	assert.Equal(t, "up", metric.Metric["__name__"])
 	assert.Equal(t, "localhost:9090", metric.Metric["instance"])
 	assert.Equal(t, "prometheus", metric.Metric["job"])
+}
+
+func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsResult, *extension_kit.ExtensionError) {
+	timestamp := time.Now()
+	json, _ := json.Marshal(action_kit_api.QueryMetricsRequestBody{
+		Target: extutil.Ptr(action_kit_api.Target{
+			Name: instance.Name,
+		}),
+		Timestamp: timestamp,
+		Config: map[string]interface{}{
+			"query": "up",
+		},
+	})
+
+	return Query(json)
+
 }
 
 type testContainer struct {
