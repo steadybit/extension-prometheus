@@ -71,7 +71,7 @@ func getPrometheusInstanceAttributeDescriptions() discovery_kit_api.AttributeDes
 }
 
 func getPrometheusInstanceDiscoveryResults() discovery_kit_api.DiscoveredTargets {
-	targets := make([]discovery_kit_api.Target, 0, len(Instances))
+	targets := make([]discovery_kit_api.Target, len(Instances))
 
 	for i, instance := range Instances {
 		targets[i] = discovery_kit_api.Target{

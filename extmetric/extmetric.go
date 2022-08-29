@@ -33,19 +33,34 @@ func getMetricCheckDescription() action_kit_api.ActionDescription {
 		Id:          fmt.Sprintf("%s.metrics", extinstance.PrometheusInstanceTargetId),
 		Label:       "Prometheus metrics",
 		Description: "Gather and check on Prometheus metrics",
-		Version:     "1.0.0",
+		Version:     "1.0.0-SNAPSHOT",
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
 		TargetType:  extutil.Ptr(extinstance.PrometheusInstanceTargetId),
 		Category:    extutil.Ptr("metric"),
+		Kind:        action_kit_api.Check,
+		TimeControl: action_kit_api.External,
+		Parameters: []action_kit_api.ActionParameter{
+			{
+				Label:        "Duration",
+				Name:         "duration",
+				Type:         "duration",
+				Advanced:     extutil.Ptr(false),
+				Required:     extutil.Ptr(true),
+				DefaultValue: extutil.Ptr("30s"),
+			},
+		},
 		Prepare: action_kit_api.MutatingEndpointReference{
-			Path: "/prometheus/metrics/prepare",
+			Method: action_kit_api.Post,
+			Path:   "/prometheus/metrics/prepare",
 		},
 		Start: action_kit_api.MutatingEndpointReference{
-			Path: "/prometheus/metrics/start",
+			Method: action_kit_api.Post,
+			Path:   "/prometheus/metrics/start",
 		},
 		Metrics: extutil.Ptr(action_kit_api.MetricsConfiguration{
 			Query: extutil.Ptr(action_kit_api.MetricsQueryConfiguration{
 				Endpoint: action_kit_api.MutatingEndpointReferenceWithCallInterval{
+					Method:       action_kit_api.Post,
 					Path:         "/prometheus/metrics/query",
 					CallInterval: extutil.Ptr("1s"),
 				},
