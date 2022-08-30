@@ -50,7 +50,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: steadybit/extension-aws
+          images: steadybit/extension-prometheus
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
