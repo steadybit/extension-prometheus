@@ -632,6 +632,8 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/spf13/viper v1.4.0/go.mod h1:PTJ7Z/lr49W6bUbkmS1V3by4uWynFiR9p7+dSq/yZzE=
 github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220826095001-c1ed022c53f0 h1:Dw1XTjbpPSdSW73Ymp/RMciPp3z93uIYvVTsxMOz0N0=
 github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220826095001-c1ed022c53f0/go.mod h1:zZhJKPSSeOW1pUrbvLaIq1EiONsjjYd19aTx9VCEZOM=
+github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220905090339-ca9e7dcb4d76 h1:HrVV2yiH9h8DZVx2aDQBh5L03VD3NaiDCJ8BhwBdX0g=
+github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220905090339-ca9e7dcb4d76/go.mod h1:gvwVUYojtcsuq6K8dibLfHWW95Te42ReqU32EmhLtpE=
 github.com/steadybit/discovery-kit/go/discovery_kit_api v1.0.0 h1:H/1/7vYxs6ig/uQzQaNWZtbErFNSF0WHcbiNpU1BYHw=
 github.com/steadybit/discovery-kit/go/discovery_kit_api v1.0.0/go.mod h1:OnIfjrBhmMQCYxriHmr8mT1wCpvqIZxwBHWnanFhgNA=
 github.com/steadybit/extension-kit v1.1.0 h1:cgSrYgSgQEWlmn9B/v0qW+nvgQ24/MF1WZ59f+rTaJ0=

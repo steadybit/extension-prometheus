@@ -10,7 +10,7 @@ require (
 	github.com/prometheus/common v0.37.0
 	github.com/rs/zerolog v1.27.0
 	// TODO update to released version
-	github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220826095001-c1ed022c53f0
+	github.com/steadybit/action-kit/go/action_kit_api v1.0.1-0.20220905090339-ca9e7dcb4d76
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.0.0
 	github.com/steadybit/extension-kit v1.1.0
 )
