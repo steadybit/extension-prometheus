@@ -6,7 +6,7 @@ package main
 import (
 	"fmt"
 	"github.com/rs/zerolog/log"
-	"github.com/steadybit/action-kit/go/action_kit_api"
+	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
