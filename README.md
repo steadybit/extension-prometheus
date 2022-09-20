@@ -2,6 +2,8 @@
 
 # Steadybit extension-prometheus
 
+*Open Beta: This extension generally works, but you may discover some rough edges.*
+
 A [Steadybit](https://www.steadybit.com/) check implementation to gather Prometheus metrics within chaos engineering experiment executions. These can be used as checks within experiments, e.g., to implement pre- and post-conditions.
 
 ## Configuration
