@@ -32,8 +32,8 @@ func getPrometheusInstanceTargetDescription() discovery_kit_api.TargetDescriptio
 	return discovery_kit_api.TargetDescription{
 		Id:       PrometheusInstanceTargetId,
 		Label:    discovery_kit_api.PluralLabel{One: "Prometheus instance", Other: "Prometheus instances"},
-		Category: extutil.Ptr("metrics"),
-		Version:  "1.0.0",
+		Category: extutil.Ptr("monitoring"),
+		Version:  "1.1.1",
 		Icon:     extutil.Ptr(PrometheusIcon),
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{

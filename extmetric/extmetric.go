@@ -33,10 +33,10 @@ func getMetricCheckDescription() action_kit_api.ActionDescription {
 		Id:          fmt.Sprintf("%s.metrics", extinstance.PrometheusInstanceTargetId),
 		Label:       "Prometheus metrics",
 		Description: "Gather and check on Prometheus metrics",
-		Version:     "1.0.0-SNAPSHOT",
+		Version:     "1.1.1",
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
 		TargetType:  extutil.Ptr(extinstance.PrometheusInstanceTargetId),
-		Category:    extutil.Ptr("metric"),
+		Category:    extutil.Ptr("monitoring"),
 		Kind:        action_kit_api.Check,
 		TimeControl: action_kit_api.External,
 		Parameters: []action_kit_api.ActionParameter{
