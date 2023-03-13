@@ -1,3 +1,28 @@
+# Contributing
+
+## Running Locally
+
+### Installing Prometheus Through Homebrew
+
+#### Installation
+
+```sh
+brew install prometheus
+brew services start prometheus
+```
+
+#### Configuration
+
+Through `/opt/homebrew/etc`
+
+### Starting the Extension
+
+```sh
+export STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME=local;
+export STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN=http://127.0.0.1:9091
+go run .
+```
+
 ## Contributor License Agreement (CLA)
 
 In order to accept your pull request, we need you to submit a CLA. You only need to do this once. If you are submitting a pull request for the first time, just submit a Pull Request and our CLA Bot will give you instructions on how to sign the CLA before merging your Pull Request.
