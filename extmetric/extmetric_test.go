@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 package extmetric
 
 import (
@@ -60,7 +60,7 @@ func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsR
 		},
 	})
 
-	return Query(json)
+	return Query(context.Background(), json)
 
 }
 

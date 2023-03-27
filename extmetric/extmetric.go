@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
 package extmetric
 
@@ -83,8 +83,8 @@ type Metric struct {
 	Value     float64           `json:"value"`
 }
 
-func query(w http.ResponseWriter, _ *http.Request, body []byte) {
-	result, err := Query(body)
+func query(w http.ResponseWriter, r *http.Request, body []byte) {
+	result, err := Query(r.Context(), body)
 	if err != nil {
 		exthttp.WriteError(w, *err)
 	} else {
@@ -92,7 +92,7 @@ func query(w http.ResponseWriter, _ *http.Request, body []byte) {
 	}
 }
 
-func Query(body []byte) (*action_kit_api.QueryMetricsResult, *extension_kit.ExtensionError) {
+func Query(ctx context.Context, body []byte) (*action_kit_api.QueryMetricsResult, *extension_kit.ExtensionError) {
 	var request action_kit_api.QueryMetricsRequestBody
 	err := json.Unmarshal(body, &request)
 	if err != nil {
@@ -114,7 +114,7 @@ func Query(body []byte) (*action_kit_api.QueryMetricsResult, *extension_kit.Exte
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
-	result, _, err := client.Query(context.TODO(), query.(string), request.Timestamp)
+	result, _, err := client.Query(ctx, query.(string), request.Timestamp)
 	if err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus query against instance '%s' at timestamp %s with query '%s'",
 			request.Target.Name,

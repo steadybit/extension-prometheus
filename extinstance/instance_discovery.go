@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
 package extinstance
 
@@ -79,7 +79,6 @@ func getPrometheusInstanceDiscoveryResults() discovery_kit_api.DiscoveredTargets
 			Label:      instance.Name,
 			TargetType: PrometheusInstanceTargetId,
 			Attributes: map[string][]string{
-				"steadybit.label":          {instance.Name},
 				"prometheus.instance.name": {instance.Name},
 				"prometheus.instance.url":  {instance.BaseUrl},
 			},
