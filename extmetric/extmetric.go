@@ -10,6 +10,7 @@ import (
 	"github.com/prometheus/common/model"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	extension_kit "github.com/steadybit/extension-kit"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/extinstance"
@@ -33,7 +34,7 @@ func getMetricCheckDescription() action_kit_api.ActionDescription {
 		Id:          fmt.Sprintf("%s.metrics", extinstance.PrometheusInstanceTargetId),
 		Label:       "Prometheus metrics",
 		Description: "Gather and check on Prometheus metrics",
-		Version:     "1.1.1",
+		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
 		TargetType:  extutil.Ptr(extinstance.PrometheusInstanceTargetId),
 		Category:    extutil.Ptr("monitoring"),

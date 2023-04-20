@@ -5,8 +5,10 @@ package main
 
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/extension-kit/extbuild"
+	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-prometheus/extinstance"
@@ -17,10 +19,16 @@ func main() {
 	extlogging.InitZeroLog()
 	extbuild.PrintBuildInformation()
 
+	exthealth.SetReady(false)
+	exthealth.StartProbes(8088)
+
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 	extinstance.RegisterInstanceDiscoveryHandlers()
 	extmetric.RegisterMetricCheckHandlers()
 
+	action_kit_sdk.InstallSignalHandler()
+
+	exthealth.SetReady(true)
 	exthttp.Listen(exthttp.ListenOpts{
 		Port: 8087,
 	})
@@ -37,26 +45,26 @@ func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
 		Actions: []action_kit_api.DescribingEndpointReference{
 			{
-				"GET",
-				"/prometheus/metrics",
+				Method: "GET",
+				Path:   "/prometheus/metrics",
 			},
 		},
 		Discoveries: []discovery_kit_api.DescribingEndpointReference{
 			{
-				"GET",
-				"/prometheus/instance/discovery",
+				Method: "GET",
+				Path:   "/prometheus/instance/discovery",
 			},
 		},
 		TargetTypes: []discovery_kit_api.DescribingEndpointReference{
 			{
-				"GET",
-				"/prometheus/instance/discovery/target-description",
+				Method: "GET",
+				Path:   "/prometheus/instance/discovery/target-description",
 			},
 		},
 		TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
 			{
-				"GET",
-				"/prometheus/instance/discovery/attribute-descriptions",
+				Method: "GET",
+				Path:   "/prometheus/instance/discovery/attribute-descriptions",
 			},
 		},
 	}

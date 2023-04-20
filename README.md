@@ -18,7 +18,7 @@ A [Steadybit](https://www.steadybit.com/) check implementation to gather Prometh
 
 ## Deployment
 
-We recommend that you deploy the extension with our [official Helm chart](https://github.com/steadybit/helm-charts/tree/main/charts/steadybit-extension-prometheus).
+We recommend that you deploy the extension with our [official Helm chart](https://github.com/steadybit/extension-prometheus/tree/main/charts/steadybit-extension-prometheus).
 
 ## Agent Configuration
 

@@ -5,6 +5,7 @@ package extinstance
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 )
@@ -33,7 +34,7 @@ func getPrometheusInstanceTargetDescription() discovery_kit_api.TargetDescriptio
 		Id:       PrometheusInstanceTargetId,
 		Label:    discovery_kit_api.PluralLabel{One: "Prometheus instance", Other: "Prometheus instances"},
 		Category: extutil.Ptr("monitoring"),
-		Version:  "1.1.1",
+		Version:  extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:     extutil.Ptr(PrometheusIcon),
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{

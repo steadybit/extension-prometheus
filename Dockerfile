@@ -3,7 +3,7 @@
 ##
 ## Build
 ##
-FROM golang:1.18-alpine AS build
+FROM golang:1.20-alpine AS build
 
 ARG NAME
 ARG VERSION
@@ -22,7 +22,7 @@ RUN go build \
     -X 'github.com/steadybit/extension-kit/extbuild.ExtensionName=${NAME}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Version=${VERSION}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Revision=${REVISION}'" \
-    -o /extension-prometheus
+    -o ./extension
 
 ##
 ## Runtime
@@ -38,8 +38,9 @@ USER $USERNAME
 
 WORKDIR /
 
-COPY --from=build /extension-prometheus /extension-prometheus
+COPY --from=build /app/extension /extension
 
-EXPOSE 8084
+EXPOSE 8087
+EXPOSE 8088
 
-ENTRYPOINT ["/extension-prometheus"]
+ENTRYPOINT ["/extension"]
