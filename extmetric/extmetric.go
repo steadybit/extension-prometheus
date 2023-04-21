@@ -90,11 +90,11 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 	}
 }
 
-func (f MetricCheckAction) Prepare(ctx context.Context, _ *MetricCheckState, _ action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+func (f MetricCheckAction) Prepare(_ context.Context, _ *MetricCheckState, _ action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
 	return nil, nil
 }
 
-func (f MetricCheckAction) Start(ctx context.Context, _ *MetricCheckState) (*action_kit_api.StartResult, error) {
+func (f MetricCheckAction) Start(_ context.Context, _ *MetricCheckState) (*action_kit_api.StartResult, error) {
 	return nil, nil
 }
 
