@@ -5,38 +5,58 @@ package extmetric
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/prometheus/common/model"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/extinstance"
-	"net/http"
 	"time"
 )
 
-func RegisterMetricCheckHandlers() {
-	exthttp.RegisterHttpHandler("/prometheus/metrics", exthttp.GetterAsHandler(getMetricCheckDescription))
-	exthttp.RegisterHttpHandler("/prometheus/metrics/prepare", noopHandler)
-	exthttp.RegisterHttpHandler("/prometheus/metrics/start", noopHandler)
-	exthttp.RegisterHttpHandler("/prometheus/metrics/query", query)
+type MetricCheckAction struct {
 }
 
-func noopHandler(_ http.ResponseWriter, _ *http.Request, _ []byte) {
-
+type MetricCheckState struct {
+	Command         []string `json:"command"`
+	Pid             int      `json:"pid"`
+	CmdStateID      string   `json:"cmdStateId"`
+	Timestamp       string   `json:"timestamp"`
+	StdOutLineCount int      `json:"stdOutLineCount"`
 }
 
-func getMetricCheckDescription() action_kit_api.ActionDescription {
+func NewMetricCheckAction() action_kit_sdk.Action[MetricCheckState] {
+	return MetricCheckAction{}
+}
+
+// Make sure PostmanAction implements all required interfaces
+var _ action_kit_sdk.Action[MetricCheckState] = (*MetricCheckAction)(nil)
+var _ action_kit_sdk.ActionWithMetricQuery[MetricCheckState] = (*MetricCheckAction)(nil)
+
+func (f MetricCheckAction) NewEmptyState() MetricCheckState {
+	return MetricCheckState{}
+}
+
+func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
 		Id:          fmt.Sprintf("%s.metrics", extinstance.PrometheusInstanceTargetId),
 		Label:       "Prometheus metrics",
 		Description: "Gather and check on Prometheus metrics",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
-		TargetType:  extutil.Ptr(extinstance.PrometheusInstanceTargetId),
+		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+			TargetType:          extinstance.PrometheusInstanceTargetId,
+			QuantityRestriction: extutil.Ptr(action_kit_api.ExactlyOne),
+			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+				{
+					Label:       "by instance-name",
+					Description: extutil.Ptr("Find prometheus-instance by instance-name"),
+					Query:       "prometheus.instance.name=\"\"",
+				},
+			}),
+		}),
 		Category:    extutil.Ptr("monitoring"),
 		Kind:        action_kit_api.Check,
 		TimeControl: action_kit_api.External,
@@ -78,28 +98,15 @@ func getMetricCheckDescription() action_kit_api.ActionDescription {
 	}
 }
 
-type Metric struct {
-	Timestamp time.Time         `json:"timestamp"`
-	Metric    map[string]string `json:"metric"`
-	Value     float64           `json:"value"`
+func (f MetricCheckAction) Prepare(ctx context.Context, _ *MetricCheckState, _ action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+	return nil, nil
 }
 
-func query(w http.ResponseWriter, r *http.Request, body []byte) {
-	result, err := Query(r.Context(), body)
-	if err != nil {
-		exthttp.WriteError(w, *err)
-	} else {
-		exthttp.WriteBody(w, *result)
-	}
+func (f MetricCheckAction) Start(ctx context.Context, _ *MetricCheckState) (*action_kit_api.StartResult, error) {
+	return nil, nil
 }
 
-func Query(ctx context.Context, body []byte) (*action_kit_api.QueryMetricsResult, *extension_kit.ExtensionError) {
-	var request action_kit_api.QueryMetricsRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		return nil, extutil.Ptr(extension_kit.ToError("Failed to parse request body", err))
-	}
-
+func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_api.QueryMetricsRequestBody) (*action_kit_api.QueryMetricsResult, error) {
 	instance, err := extinstance.FindInstanceByName(request.Target.Name)
 	if err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to find Prometheus instance named '%s'", request.Target.Name), err))
@@ -145,4 +152,10 @@ func Query(ctx context.Context, body []byte) (*action_kit_api.QueryMetricsResult
 	return extutil.Ptr(action_kit_api.QueryMetricsResult{
 		Metrics: extutil.Ptr(metrics),
 	}), nil
+}
+
+type Metric struct {
+	Timestamp time.Time         `json:"timestamp"`
+	Metric    map[string]string `json:"metric"`
+	Value     float64           `json:"value"`
 }

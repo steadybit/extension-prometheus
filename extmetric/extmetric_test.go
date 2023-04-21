@@ -4,10 +4,9 @@ package extmetric
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
-	extension_kit "github.com/steadybit/extension-kit"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/extinstance"
 	"github.com/stretchr/testify/assert"
@@ -48,9 +47,10 @@ func TestQueryMetrics(t *testing.T) {
 	assert.Equal(t, "prometheus", metric.Metric["job"])
 }
 
-func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsResult, *extension_kit.ExtensionError) {
+func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsResult, error) {
 	timestamp := time.Now()
-	json, _ := json.Marshal(action_kit_api.QueryMetricsRequestBody{
+	action := NewMetricCheckAction().(action_kit_sdk.ActionWithMetricQuery[MetricCheckState])
+	return action.QueryMetrics(context.Background(), action_kit_api.QueryMetricsRequestBody{
 		Target: extutil.Ptr(action_kit_api.Target{
 			Name: instance.Name,
 		}),
@@ -59,8 +59,6 @@ func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsR
 			"query": "up",
 		},
 	})
-
-	return Query(context.Background(), json)
 
 }
 
