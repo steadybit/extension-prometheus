@@ -70,19 +70,11 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 				DefaultValue: extutil.Ptr("30s"),
 			},
 		},
-		Prepare: action_kit_api.MutatingEndpointReference{
-			Method: action_kit_api.Post,
-			Path:   "/prometheus/metrics/prepare",
-		},
-		Start: action_kit_api.MutatingEndpointReference{
-			Method: action_kit_api.Post,
-			Path:   "/prometheus/metrics/start",
-		},
+		Prepare: action_kit_api.MutatingEndpointReference{},
+		Start:   action_kit_api.MutatingEndpointReference{},
 		Metrics: extutil.Ptr(action_kit_api.MetricsConfiguration{
 			Query: extutil.Ptr(action_kit_api.MetricsQueryConfiguration{
 				Endpoint: action_kit_api.MutatingEndpointReferenceWithCallInterval{
-					Method:       action_kit_api.Post,
-					Path:         "/prometheus/metrics/query",
 					CallInterval: extutil.Ptr("1s"),
 				},
 				Parameters: []action_kit_api.ActionParameter{
