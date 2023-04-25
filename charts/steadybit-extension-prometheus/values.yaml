@@ -10,7 +10,7 @@ prometheus:
 
 image:
   # image.name -- The container image to use for the steadybit prometheus extension.
-  name: steadybit/extension-prometheus
+  name: ghcr.io/steadybit/extension-prometheus
   # image.tag -- tag name of the extension-prometheus container image to use.
   # See https://hub.docker.com/r/steadybit/extension-prometheus for all tags.
   tag: latest
