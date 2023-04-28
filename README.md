@@ -13,6 +13,7 @@ A [Steadybit](https://www.steadybit.com/) check implementation to gather Prometh
 | `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_KEY`   | Optional header key to send to the Prometheus API. Typically used for authentication purposes.   |
 | `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_VALUE` | Optional header value to send to the Prometheus API. Typically used for authentication purposes. |
 
+The extension supports all environment variables provided by [steadybit/extension-kit](https://github.com/steadybit/extension-kit#environment-variables).
 
 ## Deployment
 
