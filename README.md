@@ -19,6 +19,8 @@ The extension supports all environment variables provided by [steadybit/extensio
 
 ## Installation
 
+We recommend that you deploy the extension with our [official Helm chart](https://github.com/steadybit/extension-prometheus/tree/main/charts/steadybit-extension-prometheus).
+
 ### Helm
 
 ```sh
@@ -48,8 +50,6 @@ docker run \\
   --env STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN="{{PROMETHEUS_INSTANCE_SERVER_ORIGIN}}" \\
   ghcr.io/steadybit/extension-prometheus:latest
 ```
-
-We recommend that you deploy the extension with our [official Helm chart](https://github.com/steadybit/extension-prometheus/tree/main/charts/steadybit-extension-prometheus).
 
 ## Register the extension
 
