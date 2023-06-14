@@ -5,7 +5,10 @@ package main
 
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/extension-kit/extbuild"
+	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-prometheus/extinstance"
@@ -14,47 +17,49 @@ import (
 
 func main() {
 	extlogging.InitZeroLog()
+	extbuild.PrintBuildInformation()
+
+	exthealth.SetReady(false)
+	exthealth.StartProbes(8088)
 
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 	extinstance.RegisterInstanceDiscoveryHandlers()
-	extmetric.RegisterMetricCheckHandlers()
+	action_kit_sdk.RegisterAction(extmetric.NewMetricCheckAction())
 
+	action_kit_sdk.InstallSignalHandler()
+
+	exthealth.SetReady(true)
 	exthttp.Listen(exthttp.ListenOpts{
 		Port: 8087,
 	})
 }
 
 type ExtensionListResponse struct {
-	Actions          []action_kit_api.DescribingEndpointReference    `json:"actions"`
-	Discoveries      []discovery_kit_api.DescribingEndpointReference `json:"discoveries"`
-	TargetTypes      []discovery_kit_api.DescribingEndpointReference `json:"targetTypes"`
-	TargetAttributes []discovery_kit_api.DescribingEndpointReference `json:"targetAttributes"`
+	action_kit_api.ActionList       `json:",inline"`
+	discovery_kit_api.DiscoveryList `json:",inline"`
 }
 
 func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
-		Actions: []action_kit_api.DescribingEndpointReference{
-			{
-				"GET",
-				"/prometheus/metrics",
+		ActionList: action_kit_sdk.GetActionList(),
+		DiscoveryList: discovery_kit_api.DiscoveryList{
+			Discoveries: []discovery_kit_api.DescribingEndpointReference{
+				{
+					Method: "GET",
+					Path:   "/prometheus/instance/discovery",
+				},
 			},
-		},
-		Discoveries: []discovery_kit_api.DescribingEndpointReference{
-			{
-				"GET",
-				"/prometheus/instance/discovery",
+			TargetTypes: []discovery_kit_api.DescribingEndpointReference{
+				{
+					Method: "GET",
+					Path:   "/prometheus/instance/discovery/target-description",
+				},
 			},
-		},
-		TargetTypes: []discovery_kit_api.DescribingEndpointReference{
-			{
-				"GET",
-				"/prometheus/instance/discovery/target-description",
-			},
-		},
-		TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
-			{
-				"GET",
-				"/prometheus/instance/discovery/attribute-descriptions",
+			TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
+				{
+					Method: "GET",
+					Path:   "/prometheus/instance/discovery/attribute-descriptions",
+				},
 			},
 		},
 	}
