@@ -6,7 +6,7 @@ module github.com/steadybit/extension-prometheus
 go 1.20
 
 require (
-	github.com/prometheus/client_golang v1.15.1
+	github.com/prometheus/client_golang v1.16.0
 	github.com/prometheus/common v0.44.0
 	github.com/rs/zerolog v1.29.1 // indirect
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.1
