@@ -8,12 +8,15 @@ go 1.20
 require (
 	github.com/prometheus/client_golang v1.16.0
 	github.com/prometheus/common v0.44.0
-	github.com/rs/zerolog v1.29.1 // indirect
+	github.com/rs/zerolog v1.30.0 // indirect
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.3
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.4
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0
 	github.com/steadybit/extension-kit v1.8.4
 )
+
+// Workaround for https://github.com/testcontainers/testcontainers-go/issues/1359
+replace github.com/docker/docker v23.0.5+incompatible => github.com/docker/docker v23.0.7-0.20230730020554-801e90549aac+incompatible
 
 require (
 	github.com/stretchr/testify v1.8.4
