@@ -19,23 +19,23 @@ The extension supports all environment variables provided by [steadybit/extensio
 
 ## Installation
 
-We recommend that you deploy the extension with our [official Helm chart](https://github.com/steadybit/extension-prometheus/tree/main/charts/steadybit-extension-prometheus).
+We recommend deploying the extension with our [official Helm chart](https://github.com/steadybit/extension-prometheus/tree/main/charts/steadybit-extension-prometheus).
 
 ### Helm
 
 ```sh
-helm repo add steadybit https://steadybit.github.io/extension-prometheus
+helm repo add steadybit-extension-prometheus https://steadybit.github.io/extension-prometheus
 helm repo update
 
-helm upgrade steadybit-extension-prometheus \\
-  --install \\
-  --wait \\
-  --timeout 5m0s \\
-  --create-namespace \\
-  --namespace steadybit-extension \\
-  --set prometheus.name="dev" \\
-  --set prometheus.origin="http://prometheus-server.default.svc.cluster.local" \\
-  steadybit/steadybit-extension-prometheus
+helm upgrade steadybit-extension-prometheus \
+  --install \
+  --wait \
+  --timeout 5m0s \
+  --create-namespace \
+  --namespace steadybit-extension \
+  --set prometheus.name="dev" \
+  --set prometheus.origin="http://prometheus-server.default.svc.cluster.local" \
+  steadybit-extension-prometheus/steadybit-extension-prometheus
 ```
 
 ### Docker
@@ -43,11 +43,11 @@ helm upgrade steadybit-extension-prometheus \\
 You may alternatively start the Docker container manually.
 
 ```sh
-docker run \\
-  --env STEADYBIT_LOG_LEVEL=info \\
-  --expose 8087 \\
-  --env STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME="{{SYMBOLIC_NAME}}" \\
-  --env STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN="{{PROMETHEUS_INSTANCE_SERVER_ORIGIN}}" \\
+docker run \
+  --env STEADYBIT_LOG_LEVEL=info \
+  --expose 8087 \
+  --env STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME="{{SYMBOLIC_NAME}}" \
+  --env STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN="{{PROMETHEUS_INSTANCE_SERVER_ORIGIN}}" \
   ghcr.io/steadybit/extension-prometheus:latest
 ```
 
