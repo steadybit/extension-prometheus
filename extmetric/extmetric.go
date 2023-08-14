@@ -135,9 +135,10 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 			metric[string(key)] = string(value)
 		}
 		metrics[i] = action_kit_api.Metric{
-			Timestamp: sample.Timestamp.Time(),
-			Metric:    metric,
-			Value:     float64(sample.Value),
+			Timestamp:       sample.Timestamp.Time(),
+			TimestampSource: extutil.Ptr(action_kit_api.TimestampSourceExternal),
+			Metric:          metric,
+			Value:           float64(sample.Value),
 		}
 	}
 
