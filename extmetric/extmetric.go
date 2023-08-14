@@ -59,7 +59,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 		}),
 		Category:    extutil.Ptr("monitoring"),
 		Kind:        action_kit_api.Check,
-		TimeControl: action_kit_api.External,
+		TimeControl: action_kit_api.TimeControlExternal,
 		Parameters: []action_kit_api.ActionParameter{
 			{
 				Label:        "Duration",
