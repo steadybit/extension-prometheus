@@ -64,7 +64,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 			{
 				Label:        "Duration",
 				Name:         "duration",
-				Type:         "duration",
+				Type:         action_kit_api.Duration,
 				Advanced:     extutil.Ptr(false),
 				Required:     extutil.Ptr(true),
 				DefaultValue: extutil.Ptr("30s"),
