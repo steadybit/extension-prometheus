@@ -17,6 +17,7 @@ RUN go mod download
 
 COPY . .
 
+RUN apk add build-base
 RUN go build \
     -ldflags="\
     -X 'github.com/steadybit/extension-kit/extbuild.ExtensionName=${NAME}' \
