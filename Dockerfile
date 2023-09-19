@@ -23,6 +23,7 @@ RUN go build \
     -X 'github.com/steadybit/extension-kit/extbuild.Version=${VERSION}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Revision=${REVISION}'" \
     -o ./extension
+RUN make licenses-report
 
 ##
 ## Runtime
@@ -41,6 +42,7 @@ USER $USERNAME
 WORKDIR /
 
 COPY --from=build /app/extension /extension
+COPY --from=build /app/licenses /licenses
 
 EXPOSE 8087
 EXPOSE 8088
