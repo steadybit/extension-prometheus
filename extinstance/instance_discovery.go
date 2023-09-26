@@ -5,9 +5,11 @@ package extinstance
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
+	"github.com/steadybit/extension-prometheus/config"
 )
 
 func RegisterInstanceDiscoveryHandlers() {
@@ -86,5 +88,5 @@ func getPrometheusInstanceDiscoveryResults() discovery_kit_api.DiscoveredTargets
 		}
 	}
 
-	return discovery_kit_api.DiscoveredTargets{Targets: targets}
+	return discovery_kit_api.DiscoveredTargets{Targets: discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesInstance)}
 }

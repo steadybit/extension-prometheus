@@ -8,12 +8,13 @@ Learn about the capabilities of this extension in our [Reliability Hub](https://
 
 ## Configuration
 
-| Environment Variable                                       | Helm value               | Meaning                                                                                          | Required |
-|------------------------------------------------------------|--------------------------|--------------------------------------------------------------------------------------------------|----------|
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_NAME`         | `prometheus.name`        | Name of the Prometheus instance                                                                  | yes      |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_ORIGIN`       | `prometheus.origin`      | Url of the Prometheus                                                                            | yes      |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_KEY`   | `prometheus.headerKey`   | Optional header key to send to the Prometheus API. Typically used for authentication purposes.   | no       |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_VALUE` | `prometheus.headerValue` | Optional header value to send to the Prometheus API. Typically used for authentication purposes. | no       |
+| Environment Variable                                         | Helm value                               | Meaning                                                                                                                | Required |
+|--------------------------------------------------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------|----------|
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_NAME`           | `prometheus.name`                        | Name of the Prometheus instance                                                                                        | yes      |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_ORIGIN`         | `prometheus.origin`                      | Url of the Prometheus                                                                                                  | yes      |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_KEY`     | `prometheus.headerKey`                   | Optional header key to send to the Prometheus API. Typically used for authentication purposes.                         | no       |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_VALUE`   | `prometheus.headerValue`                 | Optional header value to send to the Prometheus API. Typically used for authentication purposes.                       | no       |
+| `STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_INSTANCE` | `discovery.attributes.excludes.instance` | List of Target Attributes which will be excluded during discovery. Checked by key equality and supporting trailing "*" | no       |
 
 The extension supports all environment variables provided by [steadybit/extension-kit](https://github.com/steadybit/extension-kit#environment-variables).
 

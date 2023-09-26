@@ -45,6 +45,10 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
               cpu: {{ .Values.resources.limits.cpu }}
           env:
+            {{- if .Values.discovery.attributes.excludes.instance }}
+            - name: STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_INSTANCE
+              value: {{ join "," .Values.discovery.attributes.excludes.instance | quote }}
+            {{- end }}
             {{- include "extensionlib.deployment.env" (list .) | nindent 12 }}
             - name: STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME
               value: {{ .Values.prometheus.name | quote }}

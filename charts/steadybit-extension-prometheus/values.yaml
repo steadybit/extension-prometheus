@@ -100,3 +100,9 @@ extraEnv: []
 #  - secretRef:
 #    name: env-secrets
 extraEnvFrom: []
+
+discovery:
+  attributes:
+    excludes:
+      # discovery.attributes.excludes.instance -- List of attributes to exclude from discovery.
+      instance: []

@@ -13,6 +13,7 @@ import (
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-kit/extruntime"
+	"github.com/steadybit/extension-prometheus/config"
 	"github.com/steadybit/extension-prometheus/extinstance"
 	"github.com/steadybit/extension-prometheus/extmetric"
 )
@@ -24,6 +25,11 @@ func main() {
 
 	exthealth.SetReady(false)
 	exthealth.StartProbes(8088)
+
+	// Most extensions require some form of configuration. These calls exist to parse and validate the
+	// configuration obtained from environment variables.
+	config.ParseConfiguration()
+	config.ValidateConfiguration()
 
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 	extinstance.RegisterInstanceDiscoveryHandlers()
