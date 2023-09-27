@@ -16,6 +16,7 @@ import (
 	"github.com/steadybit/extension-prometheus/config"
 	"github.com/steadybit/extension-prometheus/extinstance"
 	"github.com/steadybit/extension-prometheus/extmetric"
+	_ "net/http/pprof" //allow pprof
 )
 
 func main() {
