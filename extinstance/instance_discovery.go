@@ -4,34 +4,43 @@
 package extinstance
 
 import (
+	"context"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/config"
+	"time"
 )
 
-func RegisterInstanceDiscoveryHandlers() {
-	exthttp.RegisterHttpHandler("/prometheus/instance/discovery", exthttp.GetterAsHandler(getPrometheusInstanceDiscoveryDescription))
-	exthttp.RegisterHttpHandler("/prometheus/instance/discovery/target-description", exthttp.GetterAsHandler(getPrometheusInstanceTargetDescription))
-	exthttp.RegisterHttpHandler("/prometheus/instance/discovery/attribute-descriptions", exthttp.GetterAsHandler(getPrometheusInstanceAttributeDescriptions))
-	exthttp.RegisterHttpHandler("/prometheus/instance/discovery/discovered-targets", exthttp.GetterAsHandler(getPrometheusInstanceDiscoveryResults))
+type instanceDiscovery struct {
 }
 
-func getPrometheusInstanceDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
+var (
+	_ discovery_kit_sdk.TargetDescriber    = (*instanceDiscovery)(nil)
+	_ discovery_kit_sdk.AttributeDescriber = (*instanceDiscovery)(nil)
+)
+
+func NewInstanceDiscovery() discovery_kit_sdk.TargetDiscovery {
+	discovery := &instanceDiscovery{}
+	return discovery_kit_sdk.NewCachedTargetDiscovery(discovery,
+		discovery_kit_sdk.WithRefreshTargetsNow(),
+		discovery_kit_sdk.WithRefreshTargetsInterval(context.Background(), 30*time.Second),
+	)
+}
+
+func (d *instanceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
 		Id:         PrometheusInstanceTargetId,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
-			Method:       "GET",
-			Path:         "/prometheus/instance/discovery/discovered-targets",
 			CallInterval: extutil.Ptr("30s"),
 		},
 	}
 }
 
-func getPrometheusInstanceTargetDescription() discovery_kit_api.TargetDescription {
+func (d *instanceDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:       PrometheusInstanceTargetId,
 		Label:    discovery_kit_api.PluralLabel{One: "Prometheus instance", Other: "Prometheus instances"},
@@ -53,27 +62,25 @@ func getPrometheusInstanceTargetDescription() discovery_kit_api.TargetDescriptio
 	}
 }
 
-func getPrometheusInstanceAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
-	return discovery_kit_api.AttributeDescriptions{
-		Attributes: []discovery_kit_api.AttributeDescription{
-			{
-				Attribute: "prometheus.instance.name",
-				Label: discovery_kit_api.PluralLabel{
-					One:   "Prometheus instance name",
-					Other: "Prometheus instance names",
-				},
-			}, {
-				Attribute: "prometheus.instance.url",
-				Label: discovery_kit_api.PluralLabel{
-					One:   "Prometheus instance URL",
-					Other: "Prometheus instance URLs",
-				},
+func (d *instanceDiscovery) DescribeAttributes() []discovery_kit_api.AttributeDescription {
+	return []discovery_kit_api.AttributeDescription{
+		{
+			Attribute: "prometheus.instance.name",
+			Label: discovery_kit_api.PluralLabel{
+				One:   "Prometheus instance name",
+				Other: "Prometheus instance names",
+			},
+		}, {
+			Attribute: "prometheus.instance.url",
+			Label: discovery_kit_api.PluralLabel{
+				One:   "Prometheus instance URL",
+				Other: "Prometheus instance URLs",
 			},
 		},
 	}
 }
 
-func getPrometheusInstanceDiscoveryResults() discovery_kit_api.DiscoveredTargets {
+func (d *instanceDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api.Target, error) {
 	targets := make([]discovery_kit_api.Target, len(Instances))
 
 	for i, instance := range Instances {
@@ -88,5 +95,5 @@ func getPrometheusInstanceDiscoveryResults() discovery_kit_api.DiscoveredTargets
 		}
 	}
 
-	return discovery_kit_api.DiscoveredTargets{Targets: discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesInstance)}
+	return discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesInstance), nil
 }
