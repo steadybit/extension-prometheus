@@ -8,7 +8,7 @@ go 1.21
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.18.0
-	github.com/prometheus/common v0.45.0
+	github.com/prometheus/common v0.46.0
 	github.com/rs/zerolog v1.31.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.8.0
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.8
@@ -122,17 +122,17 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	github.com/zmwangx/debounce v1.0.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.4.0 // indirect
 	golang.org/x/tools v0.15.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
 	google.golang.org/grpc v1.58.3 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
