@@ -32,8 +32,7 @@ func NewInstanceDiscovery() discovery_kit_sdk.TargetDiscovery {
 
 func (d *instanceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         PrometheusInstanceTargetId,
-		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
+		Id: PrometheusInstanceTargetId,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			CallInterval: extutil.Ptr("30s"),
 		},
