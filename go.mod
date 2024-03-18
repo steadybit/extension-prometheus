@@ -18,7 +18,7 @@ require (
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.5.2
 	github.com/steadybit/discovery-kit/go/discovery_kit_commons v0.1.0
 	github.com/steadybit/discovery-kit/go/discovery_kit_sdk v1.0.6
-	github.com/steadybit/extension-kit v1.8.12
+	github.com/steadybit/extension-kit v1.8.14
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.26.0
 	go.uber.org/automaxprocs v1.5.3
@@ -42,6 +42,8 @@ require (
 	github.com/docker/docker v24.0.7+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
+	github.com/elastic/go-sysinfo v1.13.1 // indirect
+	github.com/elastic/go-windows v1.0.0 // indirect
 	github.com/getkin/kin-openapi v0.123.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-openapi/jsonpointer v0.20.3 // indirect
@@ -51,6 +53,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/invopop/yaml v0.2.0 // indirect
+	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.3 // indirect
@@ -77,6 +80,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/prometheus/client_model v0.6.0 // indirect
+	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/rs/xid v1.5.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.10 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
@@ -94,4 +98,5 @@ require (
 	google.golang.org/grpc v1.58.3 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	howett.net/plist v0.0.0-20181124034731-591f970eefbb // indirect
 )
