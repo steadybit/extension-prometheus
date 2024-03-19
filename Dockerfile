@@ -9,6 +9,7 @@ ARG TARGETOS TARGETARCH
 ARG NAME
 ARG VERSION
 ARG REVISION
+ARG ADDITIONAL_BUILD_PARAMS
 ARG SKIP_LICENSES_REPORT=false
 
 WORKDIR /app
@@ -25,7 +26,8 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
     -X 'github.com/steadybit/extension-kit/extbuild.ExtensionName=${NAME}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Version=${VERSION}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Revision=${REVISION}'" \
-    -o ./extension
+    -o ./extension \
+    ${ADDITIONAL_BUILD_PARAMS}
 RUN make licenses-report
 
 ##
