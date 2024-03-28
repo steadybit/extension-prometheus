@@ -5,6 +5,7 @@ package extmetric
 import (
 	"context"
 	"fmt"
+	dcontainer "github.com/docker/docker/api/types/container"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extutil"
@@ -78,14 +79,8 @@ func setupTestContainers(ctx context.Context) (*testContainer, error) {
 		Name:         "test-prometheus",
 		ExposedPorts: []string{"9090/tcp"},
 		WaitingFor:   wait.ForHTTP("/-/ready").WithPort("9090"),
-		Mounts: testcontainers.ContainerMounts{
-			testcontainers.ContainerMount{
-				Source: testcontainers.GenericBindMountSource{
-					HostPath: path.Join(wd, "prometheus-test-config"),
-				},
-				Target:   "/etc/prometheus",
-				ReadOnly: true,
-			},
+		HostConfigModifier: func(hostConfig *dcontainer.HostConfig) {
+			hostConfig.Binds = append(hostConfig.Binds, path.Join(wd, "prometheus-test-config")+":/etc/prometheus")
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
