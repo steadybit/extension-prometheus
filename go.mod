@@ -9,6 +9,7 @@ toolchain go1.21.7
 
 require (
 	github.com/KimMachineGun/automemlimit v0.5.0
+	github.com/docker/docker v25.0.5+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.19.0
 	github.com/prometheus/common v0.51.1
@@ -41,7 +42,6 @@ require (
 	github.com/cpuguy83/dockercfg v0.3.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/distribution/reference v0.5.0 // indirect
-	github.com/docker/docker v25.0.3+incompatible // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/elastic/go-sysinfo v1.13.1 // indirect
