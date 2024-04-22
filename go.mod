@@ -9,7 +9,7 @@ toolchain go1.21.7
 
 require (
 	github.com/KimMachineGun/automemlimit v0.6.0
-	github.com/docker/docker v25.0.5+incompatible
+	github.com/docker/docker v26.1.0+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.19.0
 	github.com/prometheus/common v0.53.0
@@ -73,6 +73,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/patternmatcher v0.6.0 // indirect
 	github.com/moby/spdystream v0.2.0 // indirect
 	github.com/moby/sys/sequential v0.5.0 // indirect
