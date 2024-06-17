@@ -9,7 +9,7 @@ toolchain go1.22.2
 
 require (
 	github.com/KimMachineGun/automemlimit v0.6.1
-	github.com/docker/docker v26.1.4+incompatible
+	github.com/docker/docker v27.0.0+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/prometheus/common v0.54.0
