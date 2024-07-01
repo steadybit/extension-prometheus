@@ -12,7 +12,7 @@ require (
 	github.com/docker/docker v26.1.4+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.19.1
-	github.com/prometheus/common v0.54.0
+	github.com/prometheus/common v0.55.0
 	github.com/rs/zerolog v1.33.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.0
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.9
@@ -114,7 +114,7 @@ require (
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
 	golang.org/x/mod v0.18.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/oauth2 v0.19.0 // indirect
+	golang.org/x/oauth2 v0.21.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/term v0.21.0 // indirect
