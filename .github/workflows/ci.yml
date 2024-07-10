@@ -19,10 +19,15 @@ jobs:
     uses: steadybit/extension-kit/.github/workflows/reusable-extension-ci.yml@main
     with:
       go_version: '1.22'
-      build_linux_packages: false
+      build_linux_packages: true
       VERSION_BUMPER_APPID: ${{ vars.GH_APP_STEADYBIT_APP_ID }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       PAT_TOKEN_EXTENSION_DEPLOYER: ${{ secrets.PAT_TOKEN_EXTENSION_DEPLOYER }}
+      MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+      MAVEN_GPG_PRIVATE_KEY_PASSWORD: ${{ secrets.MAVEN_GPG_PRIVATE_KEY_PASSWORD }}
+      PAT_TOKEN_GORELEASER: ${{ secrets.PAT_TOKEN }}
+      STEADYBIT_ARTIFACT_SERVER_USERNAME: ${{ secrets.STEADYBIT_ARTIFACT_SERVER_USERNAME }}
+      STEADYBIT_ARTIFACT_SERVER_PASSWORD: ${{ secrets.STEADYBIT_ARTIFACT_SERVER_PASSWORD }}
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       VERSION_BUMPER_SECRET: ${{ secrets.GH_APP_STEADYBIT_PRIVATE_KEY }}
