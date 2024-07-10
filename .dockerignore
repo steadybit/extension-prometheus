@@ -1,0 +1,4 @@
+/dist
+/coverageout
+/.idea
+*.iml

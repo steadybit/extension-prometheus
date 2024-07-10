@@ -1,0 +1,18 @@
+[Unit]
+Description="steadybit extension prometheus"
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/opt/steadybit/extension-prometheus/extension-prometheus
+EnvironmentFile=/etc/steadybit/extension-prometheus
+User=steadybit
+Group=steadybit
+SuccessExitStatus=0 143
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/var/log/steadybit-extension-prometheus.log
+StandardError=append:/var/log/steadybit-extension-prometheus.log
+
+[Install]
+WantedBy=multi-user.target

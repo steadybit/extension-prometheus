@@ -4,3 +4,7 @@ extension-prometheus.iml
 /e2e/e2e-coverage-docker.out
 /licenses
 /snyk.sarif
+/gpg.key
+/dist
+/extension
+
