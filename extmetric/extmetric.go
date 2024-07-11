@@ -31,7 +31,7 @@ func NewMetricCheckAction() action_kit_sdk.Action[MetricCheckState] {
 	return MetricCheckAction{}
 }
 
-// Make sure PostmanAction implements all required interfaces
+// Make sure PrometheusAction implements all required interfaces
 var _ action_kit_sdk.Action[MetricCheckState] = (*MetricCheckAction)(nil)
 var _ action_kit_sdk.ActionWithMetricQuery[MetricCheckState] = (*MetricCheckAction)(nil)
 
