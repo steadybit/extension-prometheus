@@ -11,6 +11,35 @@ entries:
         - name: Steadybit reliability hub
           url: https://hub.steadybit.com
     apiVersion: v2
+    appVersion: v2.1.1
+    created: "2024-07-11T15:18:36.524546507Z"
+    dependencies:
+    - name: extensionlib
+      repository: https://steadybit.github.io/helm-charts
+      version: ^1.4.4
+    description: Steadybit Prometheus extension Helm chart for Kubernetes.
+    digest: c3ed154f8054c8d96f7ef9b8c38998d8772577ce1ae0e6e01ecaf558d286ec07
+    home: https://www.steadybit.com/
+    icon: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+    maintainers:
+    - email: daniel.reuter@steadybit.com
+      name: reuda
+    name: steadybit-extension-prometheus
+    sources:
+    - https://github.com/steadybit/extension-prometheus
+    urls:
+    - https://github.com/steadybit/extension-prometheus/releases/download/steadybit-extension-prometheus-1.5.7/steadybit-extension-prometheus-1.5.7.tgz
+    version: 1.5.7
+  - annotations:
+      artifacthub.io/images: |
+        - name: logo
+          image: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+      artifacthub.io/links: |-
+        - name: Steadybit website
+          url: https://www.steadybit.com
+        - name: Steadybit reliability hub
+          url: https://hub.steadybit.com
+    apiVersion: v2
     appVersion: v2.1.0
     created: "2024-07-11T10:54:16.246428169Z"
     dependencies:
@@ -813,4 +842,4 @@ entries:
     urls:
     - https://github.com/steadybit/extension-prometheus/releases/download/steadybit-extension-prometheus-1.4.3/steadybit-extension-prometheus-1.4.3.tgz
     version: 1.4.3
-generated: "2024-07-11T10:54:16.246759034Z"
+generated: "2024-07-11T15:18:36.524743597Z"
