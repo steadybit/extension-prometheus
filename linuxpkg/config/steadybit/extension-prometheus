@@ -1,5 +1,10 @@
 STEADYBIT_LOG_LEVEL=info
 STEADYBIT_LOG_FORMAT=text
 STEADYBIT_EXTENSION_UNIX_SOCKET=/run/steadybit/extension-prometheus.sock
+#
+# TODO:
+# Please configure the name and origin key for your prometheus instance (or multiple instances)
+# For more information visit https://github.com/steadybit/extension-prometheus
+#
 STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME=
 STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN=

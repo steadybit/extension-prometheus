@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1
+
+- add help message to the linux installation configuration
+
 ## v2.1.0
 
 - Update dependencies
