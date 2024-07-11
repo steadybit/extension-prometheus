@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0
+
+- Update dependencies
+- add linux package
+
 ## v2.0.10
 
 - Update dependencies (go 1.22)
