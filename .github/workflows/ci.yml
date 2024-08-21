@@ -22,7 +22,7 @@ jobs:
       go_version: '1.22'
       build_linux_packages: true
       VERSION_BUMPER_APPID: ${{ vars.GH_APP_STEADYBIT_APP_ID }}
-      gcp_project_location: europe-west1
+      #gcp_project_location: europe-west1
       gcp_project_id: p-artifact-registries-5m4f
       gcp_project_sa: project-service-account@p-artifact-registries-5m4f.iam.gserviceaccount.com
       gcp_workload_identity_provider: projects/1020387340820/locations/global/workloadIdentityPools/github-pool/providers/github-prvdr
