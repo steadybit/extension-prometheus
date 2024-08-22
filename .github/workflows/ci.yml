@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'gcp-artifact-registry'
     tags:
       - 'v*'
   pull_request:
@@ -16,7 +17,7 @@ concurrency:
 
 jobs:
   extension-ci:
-    uses: steadybit/extension-kit/.github/workflows/reusable-extension-ci.yml@main
+    uses: steadybit/extension-kit/.github/workflows/reusable-extension-ci.yml@gcp-artifact-registry
     with:
       go_version: '1.22'
       build_linux_packages: true
@@ -31,3 +32,4 @@ jobs:
       STEADYBIT_ARTIFACT_SERVER_PASSWORD: ${{ secrets.STEADYBIT_ARTIFACT_SERVER_PASSWORD }}
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       VERSION_BUMPER_SECRET: ${{ secrets.GH_APP_STEADYBIT_PRIVATE_KEY }}
+      GCP_ARTIFACT_REGISTRY_IDENTITY_PROVIDER: ${{ secrets.GCP_ARTIFACT_REGISTRY_IDENTITY_PROVIDER }}
