@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'gcp-artifact-registry'
+      - 'toto'
     tags:
       - 'v*'
   pull_request:
