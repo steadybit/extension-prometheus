@@ -46,6 +46,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 		Description: "Gather and check on Prometheus metrics",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
+		Technology:  extutil.Ptr("Prometheus"),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
 			TargetType:          extinstance.PrometheusInstanceTargetId,
 			QuantityRestriction: extutil.Ptr(action_kit_api.ExactlyOne),
@@ -57,7 +58,6 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 				},
 			}),
 		}),
-		Category:    extutil.Ptr("monitoring"),
 		Kind:        action_kit_api.Check,
 		TimeControl: action_kit_api.TimeControlExternal,
 		Parameters: []action_kit_api.ActionParameter{
