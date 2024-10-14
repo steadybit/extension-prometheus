@@ -14,7 +14,7 @@ require (
 	github.com/prometheus/client_golang v1.20.4
 	github.com/prometheus/common v0.60.0
 	github.com/rs/zerolog v1.33.0
-	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.3-beta.2
+	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.3
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.10
 	github.com/steadybit/action-kit/go/action_kit_test v1.2.15
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.6.0
@@ -48,7 +48,7 @@ require (
 	github.com/elastic/go-windows v1.0.2 // indirect
 	github.com/emicklei/go-restful/v3 v3.11.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/getkin/kin-openapi v0.127.0 // indirect
+	github.com/getkin/kin-openapi v0.128.0 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
