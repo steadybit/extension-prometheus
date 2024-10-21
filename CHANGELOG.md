@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.2
+
+- Set new `Technology` property in extension description
+- Update dependencies (go 1.23)
+
 ## v2.1.1
 
 - add help message to the linux installation configuration
