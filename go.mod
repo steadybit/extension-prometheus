@@ -10,7 +10,7 @@ require (
 	github.com/docker/docker v27.3.1+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.20.5
-	github.com/prometheus/common v0.60.0
+	github.com/prometheus/common v0.60.1
 	github.com/rs/zerolog v1.33.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.3
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.12
