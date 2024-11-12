@@ -39,7 +39,7 @@ func main() {
 	discovery_kit_sdk.Register(extinstance.NewInstanceDiscovery())
 	action_kit_sdk.RegisterAction(extmetric.NewMetricCheckAction())
 
-	action_kit_sdk.InstallSignalHandler()
+	extsignals.ActivateSignalHandlers()
 
 	action_kit_sdk.RegisterCoverageEndpoints()
 
