@@ -15,6 +15,7 @@ import (
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-kit/extruntime"
+	"github.com/steadybit/extension-kit/extsignals"
 	"github.com/steadybit/extension-prometheus/config"
 	"github.com/steadybit/extension-prometheus/extinstance"
 	"github.com/steadybit/extension-prometheus/extmetric"
