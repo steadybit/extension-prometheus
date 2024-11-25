@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.20.5
 	github.com/prometheus/common v0.60.1
 	github.com/rs/zerolog v1.33.0
-	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.4
+	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.6
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.14
 	github.com/steadybit/action-kit/go/action_kit_test v1.3.0
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.6.0
