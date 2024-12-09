@@ -7,7 +7,7 @@ go 1.23
 
 require (
 	github.com/KimMachineGun/automemlimit v0.6.1
-	github.com/docker/docker v27.3.1+incompatible
+	github.com/docker/docker v27.4.0+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.20.5
 	github.com/prometheus/common v0.60.1
