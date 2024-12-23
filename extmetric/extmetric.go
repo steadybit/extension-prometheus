@@ -53,7 +53,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 			QuantityRestriction: extutil.Ptr(action_kit_api.ExactlyOne),
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
-					Label:       "by instance-name",
+					Label:       "instance-name",
 					Description: extutil.Ptr("Find prometheus-instance by instance-name"),
 					Query:       "prometheus.instance.name=\"\"",
 				},
