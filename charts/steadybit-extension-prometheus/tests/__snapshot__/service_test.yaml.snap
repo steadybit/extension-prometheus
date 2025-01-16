@@ -6,12 +6,16 @@ manifest should match snapshot with TLS:
       annotations:
         steadybit.com/extension-auto-discovery: |
           {"extensions":[{"port":8087,"protocol":"https","types":["ACTION","DISCOVERY"]}]}
+        steadybit.com/extension-auto-registration: |
+          {"extensions":[{"port":8087,"protocol":"https"}]}
       labels: null
       name: RELEASE-NAME-steadybit-extension-prometheus
       namespace: NAMESPACE
     spec:
       ports:
-        - port: 8087
+        - appProtocol: tcp
+          name: tcp-app
+          port: 8087
           protocol: TCP
           targetPort: 8087
       selector:
@@ -25,12 +29,16 @@ manifest should match snapshot with mutual TLS:
       annotations:
         steadybit.com/extension-auto-discovery: |
           {"extensions":[{"port":8087,"protocol":"https","types":["ACTION","DISCOVERY"]}]}
+        steadybit.com/extension-auto-registration: |
+          {"extensions":[{"port":8087,"protocol":"https"}]}
       labels: null
       name: RELEASE-NAME-steadybit-extension-prometheus
       namespace: NAMESPACE
     spec:
       ports:
-        - port: 8087
+        - appProtocol: tcp
+          name: tcp-app
+          port: 8087
           protocol: TCP
           targetPort: 8087
       selector:
@@ -44,12 +52,16 @@ manifest should match snapshot with mutual TLS using containerPaths:
       annotations:
         steadybit.com/extension-auto-discovery: |
           {"extensions":[{"port":8087,"protocol":"https","types":["ACTION","DISCOVERY"]}]}
+        steadybit.com/extension-auto-registration: |
+          {"extensions":[{"port":8087,"protocol":"https"}]}
       labels: null
       name: RELEASE-NAME-steadybit-extension-prometheus
       namespace: NAMESPACE
     spec:
       ports:
-        - port: 8087
+        - appProtocol: tcp
+          name: tcp-app
+          port: 8087
           protocol: TCP
           targetPort: 8087
       selector:
@@ -63,12 +75,16 @@ manifest should match snapshot without TLS:
       annotations:
         steadybit.com/extension-auto-discovery: |
           {"extensions":[{"port":8087,"protocol":"http","types":["ACTION","DISCOVERY"]}]}
+        steadybit.com/extension-auto-registration: |
+          {"extensions":[{"port":8087,"protocol":"http"}]}
       labels: null
       name: RELEASE-NAME-steadybit-extension-prometheus
       namespace: NAMESPACE
     spec:
       ports:
-        - port: 8087
+        - appProtocol: tcp
+          name: tcp-app
+          port: 8087
           protocol: TCP
           targetPort: 8087
       selector:
