@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.4 (next release)
+
+- reduced timeouts for accessing prometheus to 5 seconds
+
 ## v2.1.3
 
 - update dependencies

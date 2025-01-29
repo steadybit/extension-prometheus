@@ -7,7 +7,10 @@ import (
 	"fmt"
 	"github.com/prometheus/client_golang/api"
 	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"net"
+	"net/http"
 	"os"
+	"time"
 )
 
 type Instance struct {
@@ -22,8 +25,21 @@ func (i *Instance) IsAuthenticated() bool {
 }
 
 func (i *Instance) GetApiClient() (prometheus.API, error) {
+	roundTripper := &http.Transport{
+		//custom timeouts:
+		ResponseHeaderTimeout: 5 * time.Second,
+		DialContext: (&net.Dialer{
+			Timeout:   5 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		TLSHandshakeTimeout: 5 * time.Second,
+		//from default roundtripper:
+		Proxy: http.ProxyFromEnvironment,
+	}
+
 	apiClient, err := api.NewClient(api.Config{
-		Address: i.BaseUrl,
+		Address:      i.BaseUrl,
+		RoundTripper: roundTripper,
 	})
 	if err != nil {
 		return nil, err
