@@ -8,7 +8,7 @@ go 1.23.0
 toolchain go1.23.4
 
 require (
-	github.com/KimMachineGun/automemlimit v0.7.0
+	github.com/KimMachineGun/automemlimit v0.7.1
 	github.com/docker/docker v27.5.1+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.20.5
