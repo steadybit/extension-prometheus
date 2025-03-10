@@ -11,7 +11,7 @@ require (
 	github.com/KimMachineGun/automemlimit v0.7.1
 	github.com/docker/docker v27.5.1+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/prometheus/client_golang v1.21.0
+	github.com/prometheus/client_golang v1.21.1
 	github.com/prometheus/common v0.62.0
 	github.com/rs/zerolog v1.33.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.7
