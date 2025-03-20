@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.5
+
+- update dependencies
+- fix pkg release
+
 ## v2.1.4
 
 - update dependencies

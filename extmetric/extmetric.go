@@ -12,7 +12,7 @@ import (
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
-	"github.com/steadybit/extension-prometheus/extinstance"
+	"github.com/steadybit/extension-prometheus/v2/extinstance"
 	"time"
 )
 

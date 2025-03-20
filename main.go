@@ -16,9 +16,9 @@ import (
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-kit/extruntime"
 	"github.com/steadybit/extension-kit/extsignals"
-	"github.com/steadybit/extension-prometheus/config"
-	"github.com/steadybit/extension-prometheus/extinstance"
-	"github.com/steadybit/extension-prometheus/extmetric"
+	"github.com/steadybit/extension-prometheus/v2/config"
+	"github.com/steadybit/extension-prometheus/v2/extinstance"
+	"github.com/steadybit/extension-prometheus/v2/extmetric"
 	_ "go.uber.org/automaxprocs" // Importing automaxprocs automatically adjusts GOMAXPROCS.
 )
 

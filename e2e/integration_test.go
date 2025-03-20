@@ -11,7 +11,7 @@ import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	disValidate "github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
 	"github.com/steadybit/extension-kit/extlogging"
-	"github.com/steadybit/extension-prometheus/extinstance"
+	"github.com/steadybit/extension-prometheus/v2/extinstance"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
