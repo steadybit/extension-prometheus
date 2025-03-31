@@ -5,11 +5,9 @@ module github.com/steadybit/extension-prometheus/v2
 
 go 1.24
 
-toolchain go1.24.1
-
 require (
 	github.com/KimMachineGun/automemlimit v0.7.1
-	github.com/docker/docker v28.0.2+incompatible
+	github.com/docker/docker v28.0.4+incompatible
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.21.1
 	github.com/prometheus/common v0.63.0
