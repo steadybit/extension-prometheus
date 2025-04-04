@@ -6,6 +6,9 @@ package extmetric
 import (
 	"context"
 	"fmt"
+	"time"
+
+	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
@@ -13,7 +16,6 @@ import (
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
-	"time"
 )
 
 type MetricCheckAction struct {
@@ -115,31 +117,56 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
-	result, _, err := client.Query(ctx, query.(string), request.Timestamp)
+	// Use QueryRange instead of Query to get actual metric timestamps
+	// Allow for some propagation delay in the metric pipeline
+	end := request.Timestamp.Add(-30 * time.Second)
+	// Look at the last 1 minute of data
+	start := end.Add(-1 * time.Minute)
+	// Use a reasonable step size for the time range
+	step := 15 * time.Second
+
+	r := v1.Range{
+		Start: start,
+		End:   end,
+		Step:  step,
+	}
+
+	result, _, err := client.QueryRange(ctx, query.(string), r)
+	// Using _ to ignore warnings since we don't have a proper way to log them in this context
+
 	if err != nil {
-		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus query against instance '%s' at timestamp %s with query '%s'",
+		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
 			request.Target.Name,
-			request.Timestamp,
+			start,
+			end,
 			query),
 			err))
 	}
 
-	vector, ok := result.(model.Vector)
+	// QueryRange returns a matrix instead of a vector
+	matrix, ok := result.(model.Matrix)
 	if !ok {
-		return nil, extutil.Ptr(extension_kit.ToError("PromQL query returned unexpect result. Only vectors are supported as query results", nil))
+		return nil, extutil.Ptr(extension_kit.ToError("PromQL range query returned unexpected result. Expected matrix type as query result", nil))
 	}
 
-	metrics := make([]action_kit_api.Metric, len(vector))
-	for i, sample := range vector {
-		metric := make(map[string]string, len(sample.Metric))
-		for key, value := range sample.Metric {
-			metric[string(key)] = string(value)
+	// Process the matrix result
+	var metrics []action_kit_api.Metric
+	for _, sampleStream := range matrix {
+		// For each time series in the matrix
+		metricLabels := make(map[string]string, len(sampleStream.Metric))
+		for key, value := range sampleStream.Metric {
+			metricLabels[string(key)] = string(value)
 		}
-		metrics[i] = action_kit_api.Metric{
-			Timestamp:       sample.Timestamp.Time(),
-			TimestampSource: extutil.Ptr(action_kit_api.TimestampSourceExternal),
-			Metric:          metric,
-			Value:           float64(sample.Value),
+
+		// For each sample in the time series
+		for _, samplePair := range sampleStream.Values {
+			metric := action_kit_api.Metric{
+				Timestamp:       samplePair.Timestamp.Time(),
+				TimestampSource: extutil.Ptr(action_kit_api.TimestampSourceExternal),
+				Metric:          metricLabels,
+				Value:           float64(samplePair.Value),
+			}
+			metrics = append(metrics, metric)
 		}
 	}
 
