@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
-	"sync"
 	"time"
 
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
@@ -25,18 +24,13 @@ type MetricCheckAction struct {
 }
 
 type MetricCheckState struct {
-	Command         []string `json:"command"`
-	Pid             int      `json:"pid"`
-	CmdStateID      string   `json:"cmdStateId"`
-	Timestamp       string   `json:"timestamp"`
-	StdOutLineCount int      `json:"stdOutLineCount"`
-	ExecutionId 		uuid.UUID `json:"executionId"`
+	Command         []string  `json:"command"`
+	Pid             int       `json:"pid"`
+	CmdStateID      string    `json:"cmdStateId"`
+	Timestamp       string    `json:"timestamp"`
+	StdOutLineCount int       `json:"stdOutLineCount"`
+	ExecutionId     uuid.UUID `json:"executionId"`
 }
-
-var (
-	executionsStart = sync.Map{}
-)
-
 
 func NewMetricCheckAction() action_kit_sdk.Action[MetricCheckState] {
 	return MetricCheckAction{}
@@ -126,21 +120,6 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
-	startTime, ok := executionsStart.Load(request.ExecutionId)
-	if !ok {
-		startTime = request.Timestamp
-		executionsStart.Store(request.ExecutionId, startTime)
-	}
-  	// Convert startTime to time.Time
-	startTimeTime, ok := startTime.(time.Time)
-	if !ok {
-		return nil, extutil.Ptr(extension_kit.ToError("Failed to convert startTime to time.Time", nil))
-	}
-
-	log.Info().Msgf("Start time: %s", startTimeTime)
-	log.Info().Msgf("request.Timestamp: %s", request.Timestamp)
-
-
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp
 	end := request.Timestamp
@@ -179,8 +158,11 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		}
 
 		// For each sample in the time series
+		if len(sampleStream.Values) == 0 {
+			log.Warn().Msgf("No samples found for query '%s'", query)
+			continue
+		}
 		for _, samplePair := range sampleStream.Values {
-			log.Info().Msgf("Sample pair Timestamp: %s", samplePair.Timestamp.Time())
 			metric := action_kit_api.Metric{
 				Timestamp:       samplePair.Timestamp.Time(),
 				TimestampSource: extutil.Ptr(action_kit_api.TimestampSourceExternal),
