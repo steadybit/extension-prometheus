@@ -1,8 +1,9 @@
 # Changelog
 
-## v2.1.6 (next)
+## v2.1.6
 
 - Updated dependencies
+- fixed Prometheus metrics timestamp are wrong in execution run
 
 ## v2.1.5
 
