@@ -139,3 +139,9 @@ discovery:
     excludes:
       # discovery.attributes.excludes.instance -- List of attributes to exclude from discovery.
       instance: []
+
+# extraVolumes -- Additional volumes to which the container will be mounted.
+extraVolumes: []
+
+# extraVolumeMounts -- Additional volumeMounts to which the container will be mounted.
+extraVolumeMounts: []
