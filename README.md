@@ -82,3 +82,29 @@ The version and revision of the extension:
 - are printed during the startup of the extension
 - are added as a Docker label to the image
 - are available via the `version.txt`/`revision.txt` files in the root of the image
+
+### Importing your own certificates
+
+You may want to import your own certificates. Mount a volume with the certificates and reference it in `extraVolumeMounts` and `extraVolumes` in the helm chart.
+
+This example uses a config map to store the `*.crt`-files in a configmap:
+
+```shell
+kubectl create configmap -n steadybit-agent prometheus-self-signed-ca --from-file=./self-signed-ca.crt
+```
+
+
+```yaml
+extraVolumeMounts:
+	- name: extra-certs
+		mountPath: /etc/ssl/extra-certs
+		readOnly: true
+extraVolumes:
+	- name: extra-certs
+		configMap:
+			name: prometheus-self-signed-ca
+extraEnv:
+	- name: SSL_CERT_DIR
+		value: /etc/ssl/extra-certs:/etc/ssl/certs
+```
+

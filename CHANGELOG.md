@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.7 (next)
+
+- ability to import own certificates for TLS connections to prometheus
+- ability to ignore TLS errors for prometheus connections
+
 ## v2.1.6
 
 - Updated dependencies

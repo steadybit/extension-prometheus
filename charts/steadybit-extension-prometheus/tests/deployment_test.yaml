@@ -80,3 +80,20 @@ tests:
       priorityClassName: my-priority-class
     asserts:
       - matchSnapshot: {}
+
+  - it: manifest should match snapshot with custom certificates from configmap
+    set:
+      extraVolumeMounts:
+        - name: extra-certs
+          mountPath: /etc/ssl/extra-certs
+          readOnly: true
+      extraVolumes:
+        - name: extra-certs
+          configMap:
+            name: prometheus-self-signed-ca
+      extraEnv:
+        - name: SSL_CERT_DIR
+          value: /etc/ssl/extra-certs:/etc/ssl/certs
+    asserts:
+      - matchSnapshot: {}
+

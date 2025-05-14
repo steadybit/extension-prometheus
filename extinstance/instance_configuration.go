@@ -4,9 +4,11 @@
 package extinstance
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/prometheus/client_golang/api"
 	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/steadybit/extension-prometheus/v2/config"
 	"net"
 	"net/http"
 	"os"
@@ -35,6 +37,9 @@ func (i *Instance) GetApiClient() (prometheus.API, error) {
 		TLSHandshakeTimeout: 5 * time.Second,
 		//from default roundtripper:
 		Proxy: http.ProxyFromEnvironment,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: config.Config.InsecureSkipVerify,
+		},
 	}
 
 	apiClient, err := api.NewClient(api.Config{
