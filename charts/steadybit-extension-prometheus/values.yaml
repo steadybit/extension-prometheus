@@ -7,6 +7,8 @@ prometheus:
   headerKey: null
   # prometheus.headerValue -- Optional header value which will be transmitted to the Prometheus server. Can be used for authentication purposes
   headerValue: null
+  # prometheus.insecureSkipVerify -- Whether to skip TLS verification.
+  insecureSkipVerify: false
 
 image:
   # image.name -- The container image to use for the steadybit prometheus extension.

@@ -14,6 +14,7 @@ import (
 // https://github.com/kelseyhightower/envconfig
 type Specification struct {
 	DiscoveryAttributesExcludesInstance []string `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
+	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false"`
 }
 
 var (
