@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.8
+
+- fix usage of headerKey and headerValue in the extension
+
 ## v2.1.7
 
 - ability to import own certificates for TLS connections to prometheus
