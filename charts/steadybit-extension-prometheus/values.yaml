@@ -1,7 +1,7 @@
 prometheus:
   # prometheus.name -- An alias/label for the Prometheus server. Will be presented in Steadybit's user interface.
   name: null
-  # prometheus.origin -- Origin under which the Prometheus server is available, e.g., http://kong.example.com:9090,
+  # prometheus.origin -- Origin under which the Prometheus server is available, e.g., http://prometheus.example.com:9090,
   origin: null
   # prometheus.headerKey -- Optional header key which will be transmitted to the Prometheus server. Can be used for authentication purposes
   headerKey: null

@@ -26,19 +26,47 @@ func (i *Instance) IsAuthenticated() bool {
 	return len(i.HeaderKey) > 0 && len(i.HeaderValue) > 0
 }
 
+// headerRoundTripper is a custom transport that adds headers to each request
+type headerRoundTripper struct {
+	headers map[string][]string
+	rt      http.RoundTripper
+}
+
+// RoundTrip implements the http.RoundTripper interface
+func (h *headerRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	for key, values := range h.headers {
+		for _, value := range values {
+			req.Header.Add(key, value)
+		}
+	}
+	return h.rt.RoundTrip(req)
+}
+
 func (i *Instance) GetApiClient() (prometheus.API, error) {
-	roundTripper := &http.Transport{
-		//custom timeouts:
-		ResponseHeaderTimeout: 5 * time.Second,
-		DialContext: (&net.Dialer{
-			Timeout:   5 * time.Second,
-			KeepAlive: 30 * time.Second,
-		}).DialContext,
-		TLSHandshakeTimeout: 5 * time.Second,
-		//from default roundtripper:
-		Proxy: http.ProxyFromEnvironment,
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: config.Config.InsecureSkipVerify,
+
+	headers := map[string][]string{
+		"User-Agent": {"steadybit-extension-prometheus"},
+	}
+
+	if i.IsAuthenticated() {
+		headers[i.HeaderKey] = []string{i.HeaderValue}
+	}
+
+	roundTripper := &headerRoundTripper{
+		headers: headers,
+		rt: &http.Transport{
+			//custom timeouts:
+			ResponseHeaderTimeout: 5 * time.Second,
+			DialContext: (&net.Dialer{
+				Timeout:   5 * time.Second,
+				KeepAlive: 30 * time.Second,
+			}).DialContext,
+			TLSHandshakeTimeout: 5 * time.Second,
+			//from default roundtripper:
+			Proxy: http.ProxyFromEnvironment,
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Config.InsecureSkipVerify,
+			},
 		},
 	}
 
