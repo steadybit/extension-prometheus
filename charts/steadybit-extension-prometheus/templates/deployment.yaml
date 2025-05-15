@@ -59,6 +59,10 @@ spec:
             - name: STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_INSTANCE
               value: {{ join "," .Values.discovery.attributes.excludes.instance | quote }}
             {{- end }}
+            {{- if .Values.prometheus.insecureSkipVerify }}
+            - name: STEADYBIT_EXTENSION_INSECURE_SKIP_VERIFY
+              value: {{ .Values.prometheus.insecureSkipVerify | toString | quote }}
+            {{- end }}
             {{- include "extensionlib.deployment.env" (list .) | nindent 12 }}
             - name: STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME
               value: {{ .Values.prometheus.name | quote }}
