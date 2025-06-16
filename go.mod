@@ -6,7 +6,7 @@ module github.com/steadybit/extension-prometheus/v2
 go 1.24.0
 
 require (
-	github.com/KimMachineGun/automemlimit v0.7.2
+	github.com/KimMachineGun/automemlimit v0.7.3
 	github.com/docker/docker v28.2.2+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
