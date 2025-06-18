@@ -65,7 +65,7 @@ helm upgrade steadybit-extension-prometheus \
 
 To be able to reach prometheus through thanos querier on prometheus, please allow the service account from the extension to fetch metrics:
 ```bash
-oc adm policy add-cluster-role-to-user cluster-monitoring-view -z extension-prometheus
+oc adm policy add-cluster-role-to-user cluster-monitoring-view -z steadybit-extension-prometheus -n steadybit-agent
 ```
 
 Then you need to get a dedicate token for the extension, the rotation of the token is your responsability:
