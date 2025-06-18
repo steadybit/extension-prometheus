@@ -70,7 +70,7 @@ oc adm policy add-cluster-role-to-user cluster-monitoring-view -z extension-prom
 
 Then you need to get a dedicate token for the extension, the rotation of the token is your responsability:
 ```bash
-oc sa get-token extension-prometheus -n steadybit-agent --duration=4294967296s
+oc create token steadybit-extension-prometheus --namespace steadybit-agent
 ```
 
 You can now pass the authorization token via helm values:
