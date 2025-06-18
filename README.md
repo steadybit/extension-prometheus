@@ -61,6 +61,27 @@ helm upgrade steadybit-extension-prometheus \
   steadybit-extension-prometheus/steadybit-extension-prometheus
 ```
 
+### Openshift Prometheus behind Thanos
+
+To be able to reach prometheus through thanos querier on prometheus, please allow the service account from the extension to fetch metrics:
+```bash
+oc adm policy add-cluster-role-to-user cluster-monitoring-view -z extension-prometheus
+```
+
+Then you need to get a dedicate token for the extension, the rotation of the token is your responsability:
+```bash
+oc sa get-token extension-prometheus -n steadybit-agent --duration=4294967296s
+```
+
+You can now pass the authorization token via helm values:
+```yaml
+prometheus:
+  headerKey: Authorization
+  headerValue: Bearer ${YOUR_GENERATED_TOKEN}
+```
+
+This will create a kubernetes secret with header key and value, then use it for environment variable of the extension deployment.
+
 ### Linux Package
 
 Please use
