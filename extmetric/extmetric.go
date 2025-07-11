@@ -55,7 +55,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 		Category:    extutil.Ptr("Prometheus"), //Can be removed in Q1/24 - support for backward compatibility of old sidebar
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
 			TargetType:          extinstance.PrometheusInstanceTargetId,
-			QuantityRestriction: extutil.Ptr(action_kit_api.ExactlyOne),
+			QuantityRestriction: extutil.Ptr(action_kit_api.QuantityRestrictionExactlyOne),
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label:       "instance-name",
@@ -70,7 +70,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 			{
 				Label:        "Duration",
 				Name:         "duration",
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.ActionParameterTypeDuration,
 				Advanced:     extutil.Ptr(false),
 				Required:     extutil.Ptr(true),
 				DefaultValue: extutil.Ptr("30s"),
@@ -88,7 +88,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 						Name:     "query",
 						Label:    "PromQL Query",
 						Required: extutil.Ptr(true),
-						Type:     action_kit_api.String,
+						Type:     action_kit_api.ActionParameterTypeString,
 					},
 				},
 			}),
