@@ -149,6 +149,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	}
 
 	// Process the matrix result
+	log.Debug().Str("query", query.(string)).Interface("result", matrix).Msg("Query range result received")
 	var metrics []action_kit_api.Metric
 	for _, sampleStream := range matrix {
 		// For each time series in the matrix
