@@ -4,11 +4,14 @@
 package extinstance
 
 import (
+	"bytes"
 	"crypto/tls"
 	"fmt"
 	"github.com/prometheus/client_golang/api"
 	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/rs/zerolog/log"
 	"github.com/steadybit/extension-prometheus/v2/config"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -42,6 +45,44 @@ func (h *headerRoundTripper) RoundTrip(req *http.Request) (*http.Response, error
 	return h.rt.RoundTrip(req)
 }
 
+type loggingRoundTripper struct {
+	rt http.RoundTripper
+}
+
+func (l *loggingRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	var bodyStr string
+	if req.Body != nil {
+		bodyBytes, err := io.ReadAll(req.Body)
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to read request body")
+		} else {
+			bodyStr = string(bodyBytes)
+			req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		}
+	}
+	resp, err := l.rt.RoundTrip(req)
+	if err != nil {
+		log.Warn().Err(err).Str("method", req.Method).Msg("Error during HTTP request")
+		return nil, err
+	}
+	log.Debug().
+		Str("method", req.Method).
+		Str("url", req.URL.String()).
+		Int("status", resp.StatusCode).
+		Str("request_body", bodyStr).
+		Str("response_body", func() string {
+			bodyBytes, err := io.ReadAll(resp.Body)
+			if err != nil {
+				log.Warn().Err(err).Msg("Failed to read response body")
+				return ""
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+			return string(bodyBytes)
+		}()).
+		Msg("Received HTTP response")
+	return resp, nil
+}
+
 func (i *Instance) GetApiClient() (prometheus.API, error) {
 
 	headers := map[string][]string{
@@ -54,18 +95,20 @@ func (i *Instance) GetApiClient() (prometheus.API, error) {
 
 	roundTripper := &headerRoundTripper{
 		headers: headers,
-		rt: &http.Transport{
-			//custom timeouts:
-			ResponseHeaderTimeout: 5 * time.Second,
-			DialContext: (&net.Dialer{
-				Timeout:   5 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).DialContext,
-			TLSHandshakeTimeout: 5 * time.Second,
-			//from default roundtripper:
-			Proxy: http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: config.Config.InsecureSkipVerify,
+		rt: &loggingRoundTripper{
+			rt: &http.Transport{
+				//custom timeouts:
+				ResponseHeaderTimeout: 5 * time.Second,
+				DialContext: (&net.Dialer{
+					Timeout:   5 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).DialContext,
+				TLSHandshakeTimeout: 5 * time.Second,
+				//from default roundtripper:
+				Proxy: http.ProxyFromEnvironment,
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: config.Config.InsecureSkipVerify,
+				},
 			},
 		},
 	}
