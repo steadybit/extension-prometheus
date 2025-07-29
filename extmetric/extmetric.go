@@ -131,7 +131,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		Step:  step,
 	}
 
-	result, _, err := client.QueryRange(ctx, query.(string), r)
+	result, warnings, err := client.QueryRange(ctx, query.(string), r)
 
 	if err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
@@ -140,6 +140,10 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 			end,
 			query),
 			err))
+	}
+
+	if len(warnings) > 0 {
+		log.Debug().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
 	}
 
 	// QueryRange returns a matrix instead of a vector
