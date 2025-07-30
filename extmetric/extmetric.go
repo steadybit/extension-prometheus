@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
+	"github.com/steadybit/extension-prometheus/v2/config"
 	"time"
 
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
@@ -123,6 +124,10 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval
 	end := request.Timestamp
+	if config.Config.FetchDelayMillis != 0 {
+		start = start.Add(-time.Duration(config.Config.FetchDelayMillis) * time.Millisecond)
+		end = end.Add(-time.Duration(config.Config.FetchDelayMillis) * time.Millisecond)
+	}
 	step := 1 * time.Second
 
 	r := v1.Range{
