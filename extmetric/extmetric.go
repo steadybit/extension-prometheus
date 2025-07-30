@@ -143,7 +143,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	}
 
 	if len(warnings) > 0 {
-		log.Debug().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
+		log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
 	}
 
 	// QueryRange returns a matrix instead of a vector
@@ -153,7 +153,6 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	}
 
 	// Process the matrix result
-	log.Debug().Str("query", query.(string)).Interface("result", matrix).Msg("Query range result received")
 	var metrics []action_kit_api.Metric
 	for _, sampleStream := range matrix {
 		// For each time series in the matrix
