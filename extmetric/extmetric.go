@@ -121,7 +121,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	}
 
 	// Use QueryRange instead of Query to get actual metric timestamps
-	start := request.Timestamp
+	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval
 	end := request.Timestamp
 	step := 1 * time.Second
 
