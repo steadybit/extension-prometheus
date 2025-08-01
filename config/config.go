@@ -15,6 +15,7 @@ import (
 type Specification struct {
 	DiscoveryAttributesExcludesInstance []string `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
 	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false"`
+	EnableRequestLogging                bool     `json:"enableRequestLogging" split_words:"true" default:"false"`
 	FetchDelayMillis                    int      `json:"fetchDelayMillis" split_words:"true" default:"0"`
 }
 

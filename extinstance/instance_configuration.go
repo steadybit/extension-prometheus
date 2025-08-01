@@ -93,24 +93,33 @@ func (i *Instance) GetApiClient() (prometheus.API, error) {
 		headers[i.HeaderKey] = []string{i.HeaderValue}
 	}
 
+	transport := http.Transport{
+		//custom timeouts:
+		ResponseHeaderTimeout: 5 * time.Second,
+		DialContext: (&net.Dialer{
+			Timeout:   5 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		TLSHandshakeTimeout: 5 * time.Second,
+		//from default roundtripper:
+		Proxy: http.ProxyFromEnvironment,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: config.Config.InsecureSkipVerify,
+		},
+	}
+
+	var rt http.RoundTripper
+	if config.Config.EnableRequestLogging {
+		rt = &loggingRoundTripper{
+			rt: &transport,
+		}
+	} else {
+		rt = &transport
+	}
+
 	roundTripper := &headerRoundTripper{
 		headers: headers,
-		rt: &loggingRoundTripper{
-			rt: &http.Transport{
-				//custom timeouts:
-				ResponseHeaderTimeout: 5 * time.Second,
-				DialContext: (&net.Dialer{
-					Timeout:   5 * time.Second,
-					KeepAlive: 30 * time.Second,
-				}).DialContext,
-				TLSHandshakeTimeout: 5 * time.Second,
-				//from default roundtripper:
-				Proxy: http.ProxyFromEnvironment,
-				TLSClientConfig: &tls.Config{
-					InsecureSkipVerify: config.Config.InsecureSkipVerify,
-				},
-			},
-		},
+		rt:      rt,
 	}
 
 	apiClient, err := api.NewClient(api.Config{
