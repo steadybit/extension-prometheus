@@ -8,13 +8,15 @@ Learn about the capabilities of this extension in our [Reliability Hub](https://
 
 ## Configuration
 
-| Environment Variable                                         | Helm value                               | Meaning                                                                                                                | Required |
-|--------------------------------------------------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------|----------|
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_NAME`           | `prometheus.name`                        | Name of the Prometheus instance                                                                                        | yes      |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_ORIGIN`         | `prometheus.origin`                      | Url of the Prometheus                                                                                                  | yes      |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_KEY`     | `prometheus.headerKey`                   | Optional header key to send to the Prometheus API. Typically used for authentication purposes.                         | no       |
-| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_VALUE`   | `prometheus.headerValue`                 | Optional header value to send to the Prometheus API. Typically used for authentication purposes.                       | no       |
-| `STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_INSTANCE` | `discovery.attributes.excludes.instance` | List of Target Attributes which will be excluded during discovery. Checked by key equality and supporting trailing "*" | no       |
+| Environment Variable                                         | Helm value                               | Meaning                                                                                                                                                                                                                              | Required |
+|--------------------------------------------------------------|------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_NAME`           | `prometheus.name`                        | Name of the Prometheus instance                                                                                                                                                                                                      | yes      |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_ORIGIN`         | `prometheus.origin`                      | Url of the Prometheus                                                                                                                                                                                                                | yes      |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_KEY`     | `prometheus.headerKey`                   | Optional header key to send to the Prometheus API. Typically used for authentication purposes.                                                                                                                                       | no       |
+| `STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_<n>_HEADER_VALUE`   | `prometheus.headerValue`                 | Optional header value to send to the Prometheus API. Typically used for authentication purposes.                                                                                                                                     | no       |
+| `STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_INSTANCE` | `discovery.attributes.excludes.instance` | List of Target Attributes which will be excluded during discovery. Checked by key equality and supporting trailing "*"                                                                                                               | no       |
+| `STEADYBIT_EXTENSION_ENABLE_REQUEST_LOGGING`                 | via extraEnv variables                   | Set to `true`to enable detailed Request logging                                                                                                                                                                                      | no       |
+| `STEADYBIT_EXTENSION_ADDITIONAL_REQUEST_PARAMS`              | via extraEnv variables                   | Additional Request Parameters that will be added when metrics are fetched, key value pairs for example `latency_offset,1` when using [Victoria Metics](https://docs.victoriametrics.com/victoriametrics/keyconcepts/#query-latency). | no       |
 
 The extension supports all environment variables provided by [steadybit/extension-kit](https://github.com/steadybit/extension-kit#environment-variables).
 
@@ -129,3 +131,8 @@ extraEnv:
 		value: /etc/ssl/extra-certs:/etc/ssl/certs
 ```
 
+## FAQ
+
+#### I don't see metrics from my VictoriaMetrics instance
+
+By [default](https://docs.victoriametrics.com/victoriametrics/keyconcepts/#query-latency), Victoria Metrics does not immediately return the recently written samples. You can set the `latency_offset` parameter to `1` to disable this behavior. This can be done by setting the environment variable `STEADYBIT_EXTENSION_ADDITIONAL_REQUEST_PARAMS` to `latency_offset,1`.

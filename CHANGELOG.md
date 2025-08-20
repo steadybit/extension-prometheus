@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.9
+
+- add option to enable detailed request and response logging
+- add option to add additional request parameters to the prometheus query
+- update dependencies
+
 ## v2.1.8
 
 - fix usage of headerKey and headerValue in the extension
