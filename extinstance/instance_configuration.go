@@ -45,6 +45,22 @@ func (h *headerRoundTripper) RoundTrip(req *http.Request) (*http.Response, error
 	return h.rt.RoundTrip(req)
 }
 
+type paramRoundTripper struct {
+	params []string
+	rt     http.RoundTripper
+}
+
+func (p *paramRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	q := req.URL.Query()
+	for i := 0; i < len(config.Config.AdditionalRequestParams); i += 2 {
+		key := config.Config.AdditionalRequestParams[i]
+		value := config.Config.AdditionalRequestParams[i+1]
+		q.Add(key, value)
+	}
+	req.URL.RawQuery = q.Encode()
+	return p.rt.RoundTrip(req)
+}
+
 type loggingRoundTripper struct {
 	rt http.RoundTripper
 }
@@ -108,23 +124,26 @@ func (i *Instance) GetApiClient() (prometheus.API, error) {
 		},
 	}
 
-	var rt http.RoundTripper
+	var rt http.RoundTripper = &transport
 	if config.Config.EnableRequestLogging {
 		rt = &loggingRoundTripper{
-			rt: &transport,
+			rt: rt,
 		}
-	} else {
-		rt = &transport
 	}
-
-	roundTripper := &headerRoundTripper{
+	if len(config.Config.AdditionalRequestParams) > 0 {
+		rt = &paramRoundTripper{
+			params: config.Config.AdditionalRequestParams,
+			rt:     rt,
+		}
+	}
+	rt = &headerRoundTripper{
 		headers: headers,
 		rt:      rt,
 	}
 
 	apiClient, err := api.NewClient(api.Config{
 		Address:      i.BaseUrl,
-		RoundTripper: roundTripper,
+		RoundTripper: rt,
 	})
 	if err != nil {
 		return nil, err

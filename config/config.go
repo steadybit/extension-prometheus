@@ -14,9 +14,9 @@ import (
 // https://github.com/kelseyhightower/envconfig
 type Specification struct {
 	DiscoveryAttributesExcludesInstance []string `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
-	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false"`
-	EnableRequestLogging                bool     `json:"enableRequestLogging" split_words:"true" default:"false"`
-	FetchDelayMillis                    int      `json:"fetchDelayMillis" split_words:"true" default:"0"`
+	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false" required:"false"`
+	EnableRequestLogging                bool     `json:"enableRequestLogging" split_words:"true" default:"false" required:"false"`
+	AdditionalRequestParams             []string `json:"additionalRequestParams" split_words:"true" required:"false"`
 }
 
 var (
@@ -28,8 +28,8 @@ func ParseConfiguration() {
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to parse configuration from environment.")
 	}
-	if Config.FetchDelayMillis != 0 {
-		log.Info().Int("delay", Config.FetchDelayMillis).Msg("Configuration specifies a fetch delay, which will be applied to all Prometheus queries.")
+	if len(Config.AdditionalRequestParams)%2 != 0 {
+		log.Fatal().Msgf("Additional request parameters must be provided in key-value pairs, but an odd number of parameters was provided.")
 	}
 }
 
