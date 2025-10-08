@@ -13,6 +13,7 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/prometheus/common v0.66.1
 	github.com/rs/zerolog v1.34.0
+	github.com/sethvargo/go-retry v0.3.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.10.0
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.2.0
 	github.com/steadybit/action-kit/go/action_kit_test v1.4.2

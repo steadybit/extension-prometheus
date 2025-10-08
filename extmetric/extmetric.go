@@ -6,12 +6,14 @@ package extmetric
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
-	"time"
 
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
+	retry "github.com/sethvargo/go-retry"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	extension_kit "github.com/steadybit/extension-kit"
@@ -24,12 +26,13 @@ type MetricCheckAction struct {
 }
 
 type MetricCheckState struct {
-	Command         []string  `json:"command"`
-	Pid             int       `json:"pid"`
-	CmdStateID      string    `json:"cmdStateId"`
-	Timestamp       string    `json:"timestamp"`
-	StdOutLineCount int       `json:"stdOutLineCount"`
-	ExecutionId     uuid.UUID `json:"executionId"`
+	Command           []string  `json:"command"`
+	Pid               int       `json:"pid"`
+	CmdStateID        string    `json:"cmdStateId"`
+	Timestamp         string    `json:"timestamp"`
+	StdOutLineCount   int       `json:"stdOutLineCount"`
+	ExecutionId       uuid.UUID `json:"executionId"`
+	ConsecutiveErrors int
 }
 
 func NewMetricCheckAction() action_kit_sdk.Action[MetricCheckState] {
@@ -75,6 +78,15 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 				Required:     extutil.Ptr(true),
 				DefaultValue: extutil.Ptr("30s"),
 			},
+			{
+				Label:        "Retries",
+				Name:         "retries",
+				Description:  extutil.Ptr("Retry queries this many times before returning an error."),
+				Type:         action_kit_api.ActionParameterTypeInteger,
+				Advanced:     extutil.Ptr(true),
+				Required:     extutil.Ptr(false),
+				DefaultValue: extutil.Ptr("0"),
+			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
@@ -96,7 +108,15 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 	}
 }
 
-func (f MetricCheckAction) Prepare(_ context.Context, _ *MetricCheckState, _ action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+func (f MetricCheckAction) Prepare(_ context.Context, _ *MetricCheckState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+	retries, ok := request.Config["retries"].(int)
+	if !ok {
+		retries = 0
+	}
+	if retries < 0 {
+		return nil, extutil.Ptr(extension_kit.ToError("Retries must be 0 or a positive integer", nil))
+	}
+
 	return nil, nil
 }
 
@@ -120,6 +140,11 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
+	retries, ok := request.Config["retries"].(int)
+	if !ok {
+		retries = 0
+	}
+
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval
 	end := request.Timestamp
@@ -131,9 +156,15 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		Step:  step,
 	}
 
-	result, warnings, err := client.QueryRange(ctx, query.(string), r)
-
-	if err != nil {
+	var result model.Value
+	var warnings v1.Warnings
+	if err := retry.Do(ctx, retry.WithMaxRetries(uint64(retries), retry.NewFibonacci(50*time.Millisecond)), func(ctx context.Context) error {
+		result, warnings, err = client.QueryRange(ctx, query.(string), r)
+		if err != nil {
+			return retry.RetryableError(err)
+		}
+		return nil
+	}); err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
 			request.Target.Name,
 			start,
