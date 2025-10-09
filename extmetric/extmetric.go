@@ -157,24 +157,25 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	}
 
 	var result model.Value
-	var warnings v1.Warnings
-	if err := retry.Do(ctx, retry.WithMaxRetries(uint64(retries), retry.NewFibonacci(50*time.Millisecond)), func(ctx context.Context) error {
-		result, warnings, err = client.QueryRange(ctx, query.(string), r)
+	err = retry.Do(ctx, retry.WithMaxRetries(uint64(retries), retry.NewFibonacci(50*time.Millisecond)), func(ctx context.Context) error {
+		value, warnings, err := client.QueryRange(ctx, query.(string), r)
 		if err != nil {
 			return retry.RetryableError(err)
 		}
+		if len(warnings) > 0 {
+			log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
+		}
+
+		result = value
 		return nil
-	}); err != nil {
+	})
+	if err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
 			request.Target.Name,
 			start,
 			end,
 			query),
 			err))
-	}
-
-	if len(warnings) > 0 {
-		log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
 	}
 
 	// QueryRange returns a matrix instead of a vector
