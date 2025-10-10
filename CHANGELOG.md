@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.10
+
+- add option to retry queries
+
 ## v2.1.9
 
 - add option to enable detailed request and response logging
