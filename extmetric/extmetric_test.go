@@ -16,6 +16,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extutil"
+	"github.com/steadybit/extension-prometheus/v2/config"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -32,12 +33,12 @@ func TestQueryMetrics(t *testing.T) {
 	extinstance.Instances = []extinstance.Instance{instance}
 
 	require.Eventually(t, func() bool {
-		result, err := getTestMetric(instance, nil)
+		result, err := getTestMetric(instance)
 		return err == nil && len(*result.Metrics) > 0
 	}, time.Minute, time.Millisecond*200)
 
 	// When
-	result, exterr := getTestMetric(instance, nil)
+	result, exterr := getTestMetric(instance)
 	require.Nil(t, exterr)
 
 	assert.Len(t, *result.Metrics, 1)
@@ -55,32 +56,33 @@ func TestQueryRetries(t *testing.T) {
 	tests := []struct {
 		name    string
 		wantErr bool
-		config  map[string]interface{}
+		retries int
 	}{
 		{
-			name: "NoRetries",
-			config: map[string]interface{}{
-				"retries": 0,
-			},
+			name:    "NoRetries",
+			retries: 0,
 			wantErr: true,
 		},
 		{
 			name:    "WithRetries",
 			wantErr: false,
-			config: map[string]interface{}{
-				"retries": 1,
-			},
+			retries: 1,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
 			flakyPrometheusURL := setupFlakyInstance(t)
-
+			// Cleanup so we don't impact other tests, regardless of the order.
+			prevRetries := config.Config.Retries
+			t.Cleanup(func() {
+				config.Config.Retries = prevRetries
+			})
+			config.Config.Retries = tt.retries
 			instance := extinstance.Instance{Name: "flaky-prom", BaseUrl: flakyPrometheusURL}
 			extinstance.Instances = []extinstance.Instance{instance}
 
-			_, err := getTestMetric(instance, tt.config)
+			_, err := getTestMetric(instance)
+
 			if tt.wantErr {
 				require.NotNil(t, err)
 				return
@@ -90,22 +92,18 @@ func TestQueryRetries(t *testing.T) {
 	}
 }
 
-func getTestMetric(instance extinstance.Instance, extraConfig map[string]interface{}) (*action_kit_api.QueryMetricsResult, error) {
+func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsResult, error) {
 	timestamp := time.Now()
 	action := NewMetricCheckAction().(action_kit_sdk.ActionWithMetricQuery[MetricCheckState])
-	config := map[string]interface{}{
-		"query": "up",
-	}
-	for k, v := range extraConfig {
-		config[k] = v
-	}
 
 	return action.QueryMetrics(context.Background(), action_kit_api.QueryMetricsRequestBody{
 		Target: extutil.Ptr(action_kit_api.Target{
 			Name: instance.Name,
 		}),
 		Timestamp: timestamp,
-		Config:    config,
+		Config: map[string]interface{}{
+			"query": "up",
+		},
 	})
 
 }

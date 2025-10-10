@@ -19,6 +19,7 @@ import (
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
+	"github.com/steadybit/extension-prometheus/v2/config"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
 )
 
@@ -26,13 +27,12 @@ type MetricCheckAction struct {
 }
 
 type MetricCheckState struct {
-	Command           []string  `json:"command"`
-	Pid               int       `json:"pid"`
-	CmdStateID        string    `json:"cmdStateId"`
-	Timestamp         string    `json:"timestamp"`
-	StdOutLineCount   int       `json:"stdOutLineCount"`
-	ExecutionId       uuid.UUID `json:"executionId"`
-	ConsecutiveErrors int
+	Command         []string  `json:"command"`
+	Pid             int       `json:"pid"`
+	CmdStateID      string    `json:"cmdStateId"`
+	Timestamp       string    `json:"timestamp"`
+	StdOutLineCount int       `json:"stdOutLineCount"`
+	ExecutionId     uuid.UUID `json:"executionId"`
 }
 
 func NewMetricCheckAction() action_kit_sdk.Action[MetricCheckState] {
@@ -78,15 +78,6 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 				Required:     extutil.Ptr(true),
 				DefaultValue: extutil.Ptr("30s"),
 			},
-			{
-				Label:        "Retries",
-				Name:         "retries",
-				Description:  extutil.Ptr("Retry queries this many times before returning an error."),
-				Type:         action_kit_api.ActionParameterTypeInteger,
-				Advanced:     extutil.Ptr(true),
-				Required:     extutil.Ptr(false),
-				DefaultValue: extutil.Ptr("0"),
-			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
@@ -108,15 +99,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 	}
 }
 
-func (f MetricCheckAction) Prepare(_ context.Context, _ *MetricCheckState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
-	retries, ok := request.Config["retries"].(int)
-	if !ok {
-		retries = 0
-	}
-	if retries < 0 {
-		return nil, extutil.Ptr(extension_kit.ToError("Retries must be 0 or a positive integer", nil))
-	}
-
+func (f MetricCheckAction) Prepare(_ context.Context, _ *MetricCheckState, _ action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
 	return nil, nil
 }
 
@@ -140,10 +123,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
-	retries, ok := request.Config["retries"].(int)
-	if !ok {
-		retries = 0
-	}
+	retries := config.Config.Retries
 
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval
