@@ -123,7 +123,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
-	retries := config.Config.Retries
+	retries := config.Config.QueryRetries
 
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval

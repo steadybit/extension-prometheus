@@ -16,8 +16,8 @@ type Specification struct {
 	DiscoveryAttributesExcludesInstance []string `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
 	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false" required:"false"`
 	EnableRequestLogging                bool     `json:"enableRequestLogging" split_words:"true" default:"false" required:"false"`
-	Retries                             int      `json:"retries" split_words:"true" default:"0" required:"false"`
 	AdditionalRequestParams             []string `json:"additionalRequestParams" split_words:"true" required:"false"`
+	QueryRetries                        int      `json:"queryRetries" split_words:"true" default:"0" required:"false"`
 }
 
 var (
@@ -32,8 +32,8 @@ func ParseConfiguration() {
 	if len(Config.AdditionalRequestParams)%2 != 0 {
 		log.Fatal().Msgf("Additional request parameters must be provided in key-value pairs, but an odd number of parameters was provided.")
 	}
-	if Config.Retries < 0 {
-		log.Fatal().Msgf("Retries must be 0 or a positive integer.")
+	if Config.QueryRetries < 0 {
+		log.Fatal().Msgf("QueryRetries must be 0 or a positive integer.")
 	}
 }
 

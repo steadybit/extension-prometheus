@@ -73,11 +73,11 @@ func TestQueryRetries(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			flakyPrometheusURL := setupFlakyInstance(t)
 			// Cleanup so we don't impact other tests, regardless of the order.
-			prevRetries := config.Config.Retries
+			prevRetries := config.Config.QueryRetries
 			t.Cleanup(func() {
-				config.Config.Retries = prevRetries
+				config.Config.QueryRetries = prevRetries
 			})
-			config.Config.Retries = tt.retries
+			config.Config.QueryRetries = tt.retries
 			instance := extinstance.Instance{Name: "flaky-prom", BaseUrl: flakyPrometheusURL}
 			extinstance.Instances = []extinstance.Instance{instance}
 
