@@ -7,7 +7,7 @@ go 1.24.0
 
 require (
 	github.com/KimMachineGun/automemlimit v0.7.4
-	github.com/docker/docker v28.5.0+incompatible
+	github.com/docker/docker v28.5.1+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/prometheus/client_golang v1.23.2
