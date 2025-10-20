@@ -6,17 +6,20 @@ package extmetric
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
-	"time"
 
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
+	retry "github.com/sethvargo/go-retry"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
+	"github.com/steadybit/extension-prometheus/v2/config"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
 )
 
@@ -120,6 +123,8 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
+	retries := config.Config.QueryRetries
+
 	// Use QueryRange instead of Query to get actual metric timestamps
 	start := request.Timestamp.Add(-time.Duration(1) * time.Second) // Adjust start time to ensure we capture the last second of data, matching the call interval
 	end := request.Timestamp
@@ -131,8 +136,19 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		Step:  step,
 	}
 
-	result, warnings, err := client.QueryRange(ctx, query.(string), r)
+	var result model.Value
+	err = retry.Do(ctx, retry.WithMaxRetries(uint64(retries), retry.NewFibonacci(50*time.Millisecond)), func(ctx context.Context) error {
+		value, warnings, err := client.QueryRange(ctx, query.(string), r)
+		if err != nil {
+			return retry.RetryableError(err)
+		}
+		if len(warnings) > 0 {
+			log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
+		}
 
+		result = value
+		return nil
+	})
 	if err != nil {
 		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
 			request.Target.Name,
@@ -140,10 +156,6 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 			end,
 			query),
 			err))
-	}
-
-	if len(warnings) > 0 {
-		log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
 	}
 
 	// QueryRange returns a matrix instead of a vector
