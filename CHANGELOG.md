@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.11
+
+- Update dependencies
+
 ## v2.1.10
 
 - add option to retry queries
