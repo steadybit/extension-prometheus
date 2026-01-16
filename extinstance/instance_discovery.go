@@ -42,7 +42,7 @@ func (d *instanceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 func (d *instanceDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:       PrometheusInstanceTargetId,
-		Label:    discovery_kit_api.PluralLabel{One: "Prometheus instance", Other: "Prometheus instances"},
+		Label:    discovery_kit_api.PluralLabel{One: "Prometheus Instance", Other: "Prometheus Instances"},
 		Category: extutil.Ptr("monitoring"),
 		Version:  extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:     extutil.Ptr(PrometheusIcon),
