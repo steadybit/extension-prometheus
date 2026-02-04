@@ -55,7 +55,7 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
 		Technology:  extutil.Ptr("Prometheus"),
-		Category:    extutil.Ptr("Prometheus"), //Can be removed in Q1/24 - support for backward compatibility of old sidebar
+
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
 			TargetType:          extinstance.PrometheusInstanceTargetId,
 			QuantityRestriction: extutil.Ptr(action_kit_api.QuantityRestrictionExactlyOne),
