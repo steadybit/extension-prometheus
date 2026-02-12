@@ -19,7 +19,6 @@ import (
 	"github.com/steadybit/extension-prometheus/v2/config"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
 	"github.com/steadybit/extension-prometheus/v2/extmetric"
-	_ "go.uber.org/automaxprocs" // Importing automaxprocs automatically adjusts GOMAXPROCS.
 )
 
 func main() {
