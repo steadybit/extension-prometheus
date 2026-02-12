@@ -8,3 +8,5 @@ extension-prometheus.iml
 /dist
 /extension
 
+
+.env
