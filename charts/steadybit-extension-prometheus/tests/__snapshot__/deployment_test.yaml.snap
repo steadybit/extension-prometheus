@@ -413,6 +413,84 @@ manifest should match snapshot with extra labels:
               type: RuntimeDefault
           serviceAccountName: steadybit-extension-prometheus
           volumes: null
+manifest should match snapshot with global priority class:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
+      name: RELEASE-NAME-steadybit-extension-prometheus
+      namespace: NAMESPACE
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app.kubernetes.io/instance: RELEASE-NAME
+          app.kubernetes.io/name: steadybit-extension-prometheus
+      template:
+        metadata:
+          annotations:
+            oneagent.dynatrace.com/injection: "false"
+          labels:
+            app.kubernetes.io/instance: RELEASE-NAME
+            app.kubernetes.io/name: steadybit-extension-prometheus
+            steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
+        spec:
+          containers:
+            - env:
+                - name: STEADYBIT_LOG_LEVEL
+                  value: INFO
+                - name: STEADYBIT_LOG_FORMAT
+                  value: text
+                - name: STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME
+                  value: null
+                - name: STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN
+                  value: null
+              image: ghcr.io/steadybit/extension-prometheus:v0.0.0
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /health/liveness
+                  port: 8088
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 5
+              name: extension
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /health/readiness
+                  port: 8088
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 32Mi
+                requests:
+                  cpu: 50m
+                  memory: 16Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                readOnlyRootFilesystem: true
+              volumeMounts: null
+          priorityClassName: my-global-priority-class
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccountName: steadybit-extension-prometheus
+          volumes: null
 manifest should match snapshot with insecureSkipVerify enabled:
   1: |
     apiVersion: apps/v1
