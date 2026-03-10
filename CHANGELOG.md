@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.15
+
+- feat(chart): split image.name into image.registry + image.name
+- Support global.priorityClassName
+- Update alpine packages in Docker image to address CVEs
+- Update dependencies
+
 ## v2.1.14
 
 - Update dependencies
