@@ -9,7 +9,6 @@ import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/v2/config"
 	"time"
 )
@@ -34,7 +33,7 @@ func (d *instanceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
 		Id: PrometheusInstanceTargetId,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("30s"),
+			CallInterval: new("30s"),
 		},
 	}
 }
@@ -43,9 +42,9 @@ func (d *instanceDiscovery) DescribeTarget() discovery_kit_api.TargetDescription
 	return discovery_kit_api.TargetDescription{
 		Id:       PrometheusInstanceTargetId,
 		Label:    discovery_kit_api.PluralLabel{One: "Prometheus Instance", Other: "Prometheus Instances"},
-		Category: extutil.Ptr("monitoring"),
+		Category: new("monitoring"),
 		Version:  extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:     extutil.Ptr(PrometheusIcon),
+		Icon:     new(PrometheusIcon),
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{
 				{Attribute: "prometheus.instance.name"},

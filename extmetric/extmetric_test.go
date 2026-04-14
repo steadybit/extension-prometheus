@@ -15,7 +15,6 @@ import (
 	dcontainer "github.com/docker/docker/api/types/container"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
-	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-prometheus/v2/config"
 	"github.com/steadybit/extension-prometheus/v2/extinstance"
 	"github.com/stretchr/testify/assert"
@@ -97,11 +96,11 @@ func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsR
 	action := NewMetricCheckAction().(action_kit_sdk.ActionWithMetricQuery[MetricCheckState])
 
 	return action.QueryMetrics(context.Background(), action_kit_api.QueryMetricsRequestBody{
-		Target: extutil.Ptr(action_kit_api.Target{
+		Target: new(action_kit_api.Target{
 			Name: instance.Name,
 		}),
 		Timestamp: timestamp,
-		Config: map[string]interface{}{
+		Config: map[string]any{
 			"query": "up",
 		},
 	})

@@ -54,15 +54,15 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 		Description: "Gather and check on Prometheus metrics",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(extinstance.PrometheusIcon),
-		Technology:  extutil.Ptr("Prometheus"),
+		Technology:  new("Prometheus"),
 
-		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+		TargetSelection: new(action_kit_api.TargetSelection{
 			TargetType:          extinstance.PrometheusInstanceTargetId,
 			QuantityRestriction: extutil.Ptr(action_kit_api.QuantityRestrictionExactlyOne),
-			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+			SelectionTemplates: new([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label:       "instance-name",
-					Description: extutil.Ptr("Find prometheus-instance by instance-name"),
+					Description: new("Find prometheus-instance by instance-name"),
 					Query:       "prometheus.instance.name=\"\"",
 				},
 			}),
@@ -74,23 +74,23 @@ func (f MetricCheckAction) Describe() action_kit_api.ActionDescription {
 				Label:        "Duration",
 				Name:         "duration",
 				Type:         action_kit_api.ActionParameterTypeDuration,
-				Advanced:     extutil.Ptr(false),
-				Required:     extutil.Ptr(true),
-				DefaultValue: extutil.Ptr("30s"),
+				Advanced:     new(false),
+				Required:     new(true),
+				DefaultValue: new("30s"),
 			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
-		Metrics: extutil.Ptr(action_kit_api.MetricsConfiguration{
-			Query: extutil.Ptr(action_kit_api.MetricsQueryConfiguration{
+		Metrics: new(action_kit_api.MetricsConfiguration{
+			Query: new(action_kit_api.MetricsQueryConfiguration{
 				Endpoint: action_kit_api.MutatingEndpointReferenceWithCallInterval{
-					CallInterval: extutil.Ptr("1s"),
+					CallInterval: new("1s"),
 				},
 				Parameters: []action_kit_api.ActionParameter{
 					{
 						Name:     "query",
 						Label:    "PromQL Query",
-						Required: extutil.Ptr(true),
+						Required: new(true),
 						Type:     action_kit_api.ActionParameterTypeString,
 					},
 				},
@@ -110,17 +110,17 @@ func (f MetricCheckAction) Start(_ context.Context, _ *MetricCheckState) (*actio
 func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_api.QueryMetricsRequestBody) (*action_kit_api.QueryMetricsResult, error) {
 	instance, err := extinstance.FindInstanceByName(request.Target.Name)
 	if err != nil {
-		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to find Prometheus instance named '%s'", request.Target.Name), err))
+		return nil, new(extension_kit.ToError(fmt.Sprintf("Failed to find Prometheus instance named '%s'", request.Target.Name), err))
 	}
 
 	client, err := instance.GetApiClient()
 	if err != nil {
-		return nil, extutil.Ptr(extension_kit.ToError("Failed to initialize Prometheus API client", err))
+		return nil, new(extension_kit.ToError("Failed to initialize Prometheus API client", err))
 	}
 
 	query := request.Config["query"]
 	if query == nil {
-		return nil, extutil.Ptr(extension_kit.ToError("No PromQL query defined", nil))
+		return nil, new(extension_kit.ToError("No PromQL query defined", nil))
 	}
 
 	retries := config.Config.QueryRetries
@@ -150,7 +150,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil
 	})
 	if err != nil {
-		return nil, extutil.Ptr(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
+		return nil, new(extension_kit.ToError(fmt.Sprintf("Failed to execute Prometheus range query against instance '%s' from %s to %s with query '%s'",
 			request.Target.Name,
 			start,
 			end,
@@ -161,7 +161,7 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 	// QueryRange returns a matrix instead of a vector
 	matrix, ok := result.(model.Matrix)
 	if !ok {
-		return nil, extutil.Ptr(extension_kit.ToError("PromQL range query returned unexpected result. Expected matrix type as query result", nil))
+		return nil, new(extension_kit.ToError("PromQL range query returned unexpected result. Expected matrix type as query result", nil))
 	}
 
 	// Process the matrix result
@@ -189,8 +189,8 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		}
 	}
 
-	return extutil.Ptr(action_kit_api.QueryMetricsResult{
-		Metrics: extutil.Ptr(metrics),
+	return new(action_kit_api.QueryMetricsResult{
+		Metrics: new(metrics),
 	}), nil
 }
 
