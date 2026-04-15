@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+// SPDX-FileCopyrightText: 2026 Steadybit GmbH
 
 package extinstance
 
@@ -7,15 +7,16 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"github.com/prometheus/client_golang/api"
-	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
-	"github.com/rs/zerolog/log"
-	"github.com/steadybit/extension-prometheus/v2/config"
 	"io"
 	"net"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/prometheus/client_golang/api"
+	prometheus "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/rs/zerolog/log"
+	"github.com/steadybit/extension-prometheus/v2/config"
 )
 
 type Instance struct {
@@ -110,15 +111,13 @@ func (i *Instance) GetApiClient() (prometheus.API, error) {
 	}
 
 	transport := http.Transport{
-		//custom timeouts:
-		ResponseHeaderTimeout: 5 * time.Second,
+		ResponseHeaderTimeout: config.Config.RequestTimeout,
 		DialContext: (&net.Dialer{
 			Timeout:   5 * time.Second,
 			KeepAlive: 30 * time.Second,
 		}).DialContext,
 		TLSHandshakeTimeout: 5 * time.Second,
-		//from default roundtripper:
-		Proxy: http.ProxyFromEnvironment,
+		Proxy:               http.ProxyFromEnvironment,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: config.Config.InsecureSkipVerify,
 		},

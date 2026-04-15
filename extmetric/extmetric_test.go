@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Steadybit GmbH
+// SPDX-FileCopyrightText: 2026 Steadybit GmbH
+
 package extmetric
 
 import (
@@ -91,6 +92,53 @@ func TestQueryRetries(t *testing.T) {
 	}
 }
 
+func TestQueryTimeout(t *testing.T) {
+	tests := []struct {
+		name           string
+		serverDelay    time.Duration
+		requestTimeout time.Duration
+		wantErr        bool
+	}{
+		{
+			name:           "TimeoutExceeded",
+			serverDelay:    500 * time.Millisecond,
+			requestTimeout: 100 * time.Millisecond,
+			wantErr:        true,
+		},
+		{
+			name:           "TimeoutNotExceeded",
+			serverDelay:    100 * time.Millisecond,
+			requestTimeout: 2 * time.Second,
+			wantErr:        false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			slowPrometheusURL := setupSlowInstance(t, tt.serverDelay)
+
+			prevTimeout := config.Config.RequestTimeout
+			prevRetries := config.Config.QueryRetries
+			t.Cleanup(func() {
+				config.Config.RequestTimeout = prevTimeout
+				config.Config.QueryRetries = prevRetries
+			})
+			config.Config.RequestTimeout = tt.requestTimeout
+			config.Config.QueryRetries = 0
+
+			instance := extinstance.Instance{Name: "slow-prom", BaseUrl: slowPrometheusURL}
+			extinstance.Instances = []extinstance.Instance{instance}
+
+			_, err := getTestMetric(instance)
+
+			if tt.wantErr {
+				require.NotNil(t, err)
+				return
+			}
+			require.Nil(t, err)
+		})
+	}
+}
+
 func getTestMetric(instance extinstance.Instance) (*action_kit_api.QueryMetricsResult, error) {
 	timestamp := time.Now()
 	action := NewMetricCheckAction().(action_kit_sdk.ActionWithMetricQuery[MetricCheckState])
@@ -151,6 +199,42 @@ func setupTestContainers(ctx context.Context) (*testContainer, error) {
 		container: &container,
 		baseUrl:   origin,
 	}, nil
+}
+
+func setupSlowInstance(t *testing.T, delay time.Duration) (url string) {
+	t.Helper()
+
+	server := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			time.Sleep(delay)
+
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			if _, err := w.Write([]byte(`{
+  "status": "success",
+  "data": {
+    "resultType": "matrix",
+    "result": [
+      {
+        "metric": {
+          "__name__": "up",
+          "instance": "localhost:9090",
+          "job": "prometheus"
+        },
+        "values": [
+          [1675956970.123, "1"]
+        ]
+      }
+    ]
+  }
+}`)); err != nil {
+				http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			}
+		}),
+	)
+	t.Cleanup(server.Close)
+
+	return server.URL
 }
 
 func setupFlakyInstance(t *testing.T) (url string) {
