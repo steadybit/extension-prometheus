@@ -3,6 +3,7 @@
 ## (next)
 
 - Bump Go to 1.26.2
+- Make the Prometheus request timeout configurable via `STEADYBIT_EXTENSION_REQUEST_TIMEOUT` and raise the default from 5s to 10s.
 
 ## v2.1.16
 

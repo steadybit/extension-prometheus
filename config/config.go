@@ -1,10 +1,12 @@
 /*
- * Copyright 2023 steadybit GmbH. All rights reserved.
+ * Copyright 2026 steadybit GmbH. All rights reserved.
  */
 
 package config
 
 import (
+	"time"
+
 	"github.com/kelseyhightower/envconfig"
 	"github.com/rs/zerolog/log"
 )
@@ -13,11 +15,12 @@ import (
 // through environment variables. Learn more through the documentation of the envconfig package.
 // https://github.com/kelseyhightower/envconfig
 type Specification struct {
-	DiscoveryAttributesExcludesInstance []string `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
-	InsecureSkipVerify                  bool     `json:"insecureSkipVerify" split_words:"true" default:"false" required:"false"`
-	EnableRequestLogging                bool     `json:"enableRequestLogging" split_words:"true" default:"false" required:"false"`
-	AdditionalRequestParams             []string `json:"additionalRequestParams" split_words:"true" required:"false"`
-	QueryRetries                        int      `json:"queryRetries" split_words:"true" default:"0" required:"false"`
+	DiscoveryAttributesExcludesInstance []string      `json:"discoveryAttributesExcludesInstance" split_words:"true" required:"false"`
+	InsecureSkipVerify                  bool          `json:"insecureSkipVerify" split_words:"true" default:"false" required:"false"`
+	EnableRequestLogging                bool          `json:"enableRequestLogging" split_words:"true" default:"false" required:"false"`
+	AdditionalRequestParams             []string      `json:"additionalRequestParams" split_words:"true" required:"false"`
+	QueryRetries                        int           `json:"queryRetries" split_words:"true" default:"0" required:"false"`
+	RequestTimeout                      time.Duration `json:"requestTimeout" split_words:"true" default:"10s" required:"false"`
 }
 
 var (
