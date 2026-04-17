@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	dcontainer "github.com/docker/docker/api/types/container"
+	dcontainer "github.com/moby/moby/api/types/container"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-prometheus/v2/config"
