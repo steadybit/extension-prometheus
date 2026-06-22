@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.21
+
+- build(deps): bump alpine from 3.23 to 3.24
+- build: rename workflow_dispatch input labels for the GH UI
+
 ## v2.1.20
 
 - build(deps): bump github.com/prometheus/common from 0.67.5 to 0.68.1
