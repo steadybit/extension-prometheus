@@ -118,9 +118,13 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 		return nil, new(extension_kit.ToError("Failed to initialize Prometheus API client", err))
 	}
 
-	query := request.Config["query"]
-	if query == nil {
+	queryValue := request.Config["query"]
+	if queryValue == nil {
 		return nil, new(extension_kit.ToError("No PromQL query defined", nil))
+	}
+	query, ok := queryValue.(string)
+	if !ok {
+		return nil, new(extension_kit.ToError("PromQL query must be a string", nil))
 	}
 
 	retries := config.Config.QueryRetries
@@ -138,12 +142,12 @@ func (f MetricCheckAction) QueryMetrics(ctx context.Context, request action_kit_
 
 	var result model.Value
 	err = retry.Do(ctx, retry.WithMaxRetries(uint64(retries), retry.NewFibonacci(50*time.Millisecond)), func(ctx context.Context) error {
-		value, warnings, err := client.QueryRange(ctx, query.(string), r)
+		value, warnings, err := client.QueryRange(ctx, query, r)
 		if err != nil {
 			return retry.RetryableError(err)
 		}
 		if len(warnings) > 0 {
-			log.Info().Str("query", query.(string)).Strs("warnings", warnings).Msg("Warnings returned from query.")
+			log.Info().Str("query", query).Strs("warnings", warnings).Msg("Warnings returned from query.")
 		}
 
 		result = value
