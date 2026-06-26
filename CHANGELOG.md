@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- fix: return a clear error instead of panicking when the PromQL `query` parameter is not a string
+
 ## v2.1.21
 
 - build(deps): bump alpine from 3.23 to 3.24
