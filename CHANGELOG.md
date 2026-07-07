@@ -1,7 +1,17 @@
 # Changelog
 
-## Unreleased
+## v2.1.22
 
+- build(deps): bump github.com/moby/moby/api from 1.54.2 to 1.55.0
+- build(deps): bump github.com/prometheus/common from 0.68.1 to 0.69.0
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_sdk
+- build(deps): bump github.com/steadybit/discovery-kit/go/discovery_kit_sdk
+- build(deps): bump github.com/steadybit/extension-kit
+- build(deps): bump github.com/testcontainers/testcontainers-go
+- build(deps): bump goreleaser/goreleaser from v2.16.0 to v2.17.0
+- chore: add Claude Code workflows (#278)
+- chore: silence SonarQube finding on secrets: inherit in Claude workflows
+- fix: guard non-string PromQL query parameter
 - fix: return a clear error instead of panicking when the PromQL `query` parameter is not a string
 
 ## v2.1.21
