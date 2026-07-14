@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.23
+
+- build(deps): bump github.com/prometheus/common from 0.69.0 to 0.70.0
+- build(deps): bump golang.org/x/crypto from 0.51.0 to 0.52.0
+- chore(deps): bump go to 1.26.5 (#284)
+- refactor: register extension index via exthttp.RegisterRevisionedHandler (#286)
+
 ## v2.1.22
 
 - build(deps): bump github.com/moby/moby/api from 1.54.2 to 1.55.0
