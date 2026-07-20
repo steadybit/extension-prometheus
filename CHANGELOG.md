@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.24
+
+- ci: skip build on .trivyignore.yml-only changes [skip ci]
+
 ## v2.1.23
 
 - build(deps): bump github.com/prometheus/common from 0.69.0 to 0.70.0
