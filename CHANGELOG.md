@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.26
+
+- chore(deps): update dependencies
+
 ## v2.1.25
 
 - build(deps): bump github.com/prometheus/client_golang
