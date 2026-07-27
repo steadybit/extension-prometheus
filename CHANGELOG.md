@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.25
+
+- build(deps): bump github.com/prometheus/client_golang
+- build(deps): bump github.com/sethvargo/go-retry from 0.3.0 to 0.4.0
+
 ## v2.1.24
 
 - ci: skip build on .trivyignore.yml-only changes [skip ci]
