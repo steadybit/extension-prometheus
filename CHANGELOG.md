@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.1.28
+
+- build(deps): bump github.com/stretchr/testify from 1.11.1 to 1.12.0
+- build(deps): bump github.com/testcontainers/testcontainers-go
+- chore(deps): bump steadybit kits and drop Go patch pin (#293)
+- chore(deps): pin goreleaser build toolchain to go1.26.6
+- chore(deps): use go-version-file, drop patch pin (go 1.26) (#292)
+
 ## v2.1.27
 
 - build(deps): bump goreleaser/goreleaser from v2.17.0 to v2.17.1
