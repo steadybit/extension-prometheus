@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.30
+
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- build(deps): bump github.com/steadybit/discovery-kit/go/discovery_kit_test
+- build(deps): bump github.com/stretchr/testify from 1.12.0 to 1.12.1
+
 ## v2.1.29
 
 - build(deps): bump github.com/moby/go-archive from 0.2.0 to 0.3.0
