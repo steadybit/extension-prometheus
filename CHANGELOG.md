@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.31
+
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- build(deps): bump goreleaser/goreleaser from v2.17.1 to v2.18.0
+
 ## v2.1.30
 
 - build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
