@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.32
+
+- build(deps): bump github.com/moby/moby/api from 1.55.0 to 1.56.0
+- build(deps): bump github.com/prometheus/common from 0.70.1 to 0.71.0
+- build(deps): bump goreleaser/goreleaser from v2.18.0 to v2.18.1
+- chore(deps): bump github.com/KimMachineGun/automemlimit from 0.7.5 to 1.0.0
+
 ## v2.1.31
 
 - build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
