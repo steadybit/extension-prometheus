@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.33
+
+- Add OpenTelemetry tracing support
+- Update dependencies
+
 ## v2.1.32
 
 - build(deps): bump github.com/moby/moby/api from 1.55.0 to 1.56.0
