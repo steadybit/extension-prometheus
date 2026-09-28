@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.34
+
+- build(deps): bump goreleaser/goreleaser from v2.18.1 to v2.18.2
+
 ## v2.1.33
 
 - Add OpenTelemetry tracing support
