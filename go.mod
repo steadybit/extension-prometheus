@@ -9,7 +9,7 @@ require (
 	github.com/KimMachineGun/automemlimit v1.0.0
 	github.com/google/uuid v1.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/moby/moby/api v1.56.0
+	github.com/moby/moby/api v1.56.1
 	github.com/prometheus/client_golang v1.24.1
 	github.com/prometheus/common v0.71.0
 	github.com/rs/zerolog v1.35.1
