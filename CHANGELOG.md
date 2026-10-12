@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.36
+
+- build(deps): bump github.com/moby/moby/api from 1.56.0 to 1.56.1
+- build(deps): bump github.com/prometheus/common from 0.71.0 to 0.72.0
+- chore(deps): bump golang.org/x/net to v0.61.0
+- chore(deps): update go toolchain to 1.27.2
+
 ## v2.1.35
 
 - build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
