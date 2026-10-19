@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.37
+
+- build(deps): bump github.com/sethvargo/go-retry from 0.4.0 to 0.5.0
+- build(deps): bump goreleaser/goreleaser from v2.18.2 to v2.18.3
+
 ## v2.1.36
 
 - build(deps): bump github.com/moby/moby/api from 1.56.0 to 1.56.1
