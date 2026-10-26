@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.38
+
+- build(deps): bump github.com/prometheus/common from 0.72.0 to 0.72.1
+- build(docker): build with golang:1.27-alpine to pick up Go patch releases
+
 ## v2.1.37
 
 - build(deps): bump github.com/sethvargo/go-retry from 0.4.0 to 0.5.0
