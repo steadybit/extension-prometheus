@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.39
+
+- build(deps): bump github.com/KimMachineGun/automemlimit
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- build(deps): bump github.com/steadybit/extension-kit
+
 ## v2.1.38
 
 - build(deps): bump github.com/prometheus/common from 0.72.0 to 0.72.1
