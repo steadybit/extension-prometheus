@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- fix(chart): raise default memory to 32Mi request / 64Mi limit (was 16Mi / 32Mi), to leave room for large query results
+
 ## v2.1.40
 
 - build(deps): bump github.com/prometheus/common from 0.72.1 to 0.73.1
