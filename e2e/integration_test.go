@@ -27,10 +27,8 @@ func TestWithMinikube(t *testing.T) {
 		ExtraArgs: func(m *e2e.Minikube) []string {
 			return []string{
 				"--set", "logging.level=debug",
-				"--set", "extraEnv[0].name=STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_NAME",
-				"--set", "extraEnv[0].value=Test_Prometheus",
-				"--set", "extraEnv[1].name=STEADYBIT_EXTENSION_PROMETHEUS_INSTANCE_0_ORIGIN",
-				"--set", "extraEnv[1].value=http://host.minikube.internal",
+				"--set", "prometheus.name=Test_Prometheus",
+				"--set", "prometheus.origin=http://host.minikube.internal",
 			}
 		},
 	}
