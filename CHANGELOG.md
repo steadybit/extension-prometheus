@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## v2.1.41
 
+- build(deps): bump github.com/testcontainers/testcontainers-go
+- build(deps): bump the steadybit group with 2 updates
+- chore(deps): bump golang.org/x/net to v0.62.0
+- fix(chart): raise default memory to 32Mi request / 64Mi limit (#321)
 - fix(chart): raise default memory to 32Mi request / 64Mi limit (was 16Mi / 32Mi), to leave room for large query results
 
 ## v2.1.40
