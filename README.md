@@ -146,3 +146,4 @@ extraEnv:
 #### I don't see metrics from my VictoriaMetrics instance
 
 By [default](https://docs.victoriametrics.com/victoriametrics/keyconcepts/#query-latency), Victoria Metrics does not immediately return the recently written samples. You can set the `latency_offset` parameter to `1` to disable this behavior. This can be done by setting the environment variable `STEADYBIT_EXTENSION_ADDITIONAL_REQUEST_PARAMS` to `latency_offset,1`.
+
